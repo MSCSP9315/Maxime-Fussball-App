@@ -1,0 +1,1043 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Meine Fussballwelt</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#071b12;color:#fff}button,input{font:inherit}button{cursor:pointer}
+header{padding:15px 16px;background:#0b281b;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}.logo{font-weight:1000;font-size:19px}.grow{flex:1}
+main{max-width:760px;margin:auto;padding:14px 14px 90px}.screen{display:none}.screen.on{display:block}.panel{background:#102d20;border:1px solid #ffffff18;border-radius:20px;padding:16px;margin-bottom:14px}
+h1,h2,h3{margin:0 0 10px}.muted{color:#b9c9c0;font-size:13px}.btn{border:0;border-radius:13px;padding:12px 14px;font-weight:900;background:#e8f5ea;color:#102118}.btn.green{background:#45d66f}.btn.red{background:#9b3030;color:#fff}.btn.dark{background:#ffffff10;color:#fff;border:1px solid #ffffff20}.wide{width:100%}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.tile{min-height:128px;text-align:left;border:1px solid #ffffff18;border-radius:17px;padding:14px;background:#123723;color:#fff}.tile .ico{font-size:32px}.tile b{display:block;font-size:16px;margin-top:7px}.tile small{color:#bed0c4}
+.users{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:15px 0}.user{background:#143a27;border-radius:17px;padding:10px;border:1px solid #ffffff20}.userOpen{width:100%;min-height:118px;border:0;border-radius:13px;background:#f3f1df;color:#122218;font-weight:900}.avatar{font-size:39px}.delete{width:100%;margin-top:7px;background:#5b1d1d;color:#ffdada;border:1px solid #ff8d8d44;border-radius:10px;padding:8px}
+input{width:100%;padding:13px;border:0;border-radius:12px;margin:8px 0;background:#fff;color:#111}.avatars{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 12px}.av{font-size:24px;border:2px solid transparent;border-radius:10px;background:#ffffff10;padding:7px}.av.sel{border-color:#5af184}
+.stats{display:flex;gap:7px;flex-wrap:wrap}.pill{background:#ffffff0d;border:1px solid #ffffff16;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.question{font-size:21px;font-weight:900;margin:18px 0}.answers{display:grid;gap:9px}.ans{padding:13px;border:0;border-radius:12px;text-align:left;font-weight:800}.good{background:#45d66f!important}.bad{background:#e45d5d!important;color:#fff}
+.cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.pcard{aspect-ratio:.66;background:linear-gradient(145deg,#f3e8a9,#c89f3c);color:#15130c;border-radius:14px;padding:8px;text-align:center;position:relative}.pcard.lock{background:#26372e;color:#84958b}.flag{font-size:28px}.rating{font-size:24px;font-weight:1000}.pname{font-size:11px;font-weight:1000}.pos{font-size:10px}.rar{font-size:9px;margin-top:3px}
+.playerPhoto{width:100%;height:92px;object-fit:cover;object-position:center top;border-radius:9px;margin:3px 0 6px;background:#d9c476}
+.photoFallback{width:100%;height:92px;border-radius:9px;margin:3px 0 6px;background:linear-gradient(#274f3a,#11291e);display:flex;align-items:center;justify-content:center;flex-direction:column;color:white}.lockedCover{width:100%;height:118px;border-radius:10px;background:linear-gradient(145deg,#26332d,#101713);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#cbd5cf;margin-bottom:7px;border:1px solid #46554d}.lockedCover .lockIcon{font-size:38px}.lockedCover .lockText{font-size:9px;font-weight:1000;letter-spacing:.5px;margin-top:5px}.photoFallback .person{font-size:46px;line-height:1}.photoFallback .f{font-size:20px}
+.pitch{background:#176438;border-radius:20px;padding:13px 5px;margin:12px 0;border:2px solid #ffffff30}.row{display:flex;justify-content:center;gap:6px;margin:10px 0}.slot{width:23%;min-height:82px;border:1px dashed #ffffff88;border-radius:11px;background:#ffffff08;color:#fff;padding:5px;font-size:10px}.slot.filled{background:#f0edd8;color:#142116;border:0}.slot strong{display:block}.slot .sr{font-size:18px;font-weight:1000}.slot img{width:38px;height:38px;object-fit:cover;border-radius:50%;display:block;margin:0 auto 3px}
+.chooser{display:grid;grid-template-columns:1fr 1fr;gap:7px}.choice{padding:9px;background:#ffffff0c;color:#fff;border:1px solid #ffffff18;border-radius:11px;text-align:left}.choice:disabled{opacity:.25}
+.progress{height:10px;background:#ffffff12;border-radius:99px;overflow:hidden}.bar{height:100%;background:#55e67c}.world{padding:12px;border-radius:14px;background:#ffffff0a;margin:8px 0}.locked{opacity:.45}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:center;justify-content:center;padding:20px}.modal.on{display:flex}.modalbox{max-width:420px;width:100%;background:#123523;border-radius:20px;padding:18px}
+@media(max-width:480px){.cardgrid{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr 1fr}}
+
+#chooser{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-top:10px}
+#chooser .playerChoice{position:relative;border:2px solid #d6ddd8;border-radius:14px;padding:7px;background:#fff;color:#13251c;text-align:center;min-height:175px}
+#chooser .playerChoice.best{border-color:#2e8b57}
+#chooser .playerChoice.used{opacity:.48}
+#chooser .playerChoice img{width:100%;height:88px;object-fit:cover;border-radius:9px}
+#chooser .miniFallback{height:88px;border-radius:9px;background:#21382c;color:white;display:flex;align-items:center;justify-content:center;font-size:34px}
+#chooser .choiceRating{position:absolute;top:11px;left:11px;background:#111;color:#fff;border-radius:8px;padding:3px 6px;font-weight:1000}
+#chooser .choiceName{font-size:12px;font-weight:1000;margin-top:5px}
+#chooser .choiceMeta{font-size:10px;opacity:.75}
+#chooser .usedTag{font-size:9px;font-weight:900;margin-top:4px}
+#chooser .clearSlot{grid-column:1/-1}
+
+#ownedCards{grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:12px}
+#ownedCards .pcard{position:relative;overflow:hidden;min-height:224px;padding:8px 8px 12px!important;border:3px solid #d8ae49!important;border-radius:15px!important;background:linear-gradient(145deg,#f4d87b 0%,#94712b 9%,#121b1a 24%,#162a25 70%,#c69b3a 100%)!important;color:white!important;box-shadow:0 6px 14px #0005;text-align:center}
+#ownedCards .pcard .rating{position:absolute;top:9px;left:10px;font-size:29px!important;color:#fff3c2;text-shadow:1px 2px 3px #000;z-index:2}
+#ownedCards .pcard .playerPhoto,#ownedCards .pcard .photoFallback{width:100%;height:142px;object-fit:cover;border-radius:8px;margin:12px 0 3px}
+#ownedCards .pcard .pname{font-size:15px!important;font-weight:1000!important;background:#0b1515;padding:6px 2px;margin:0!important;border-radius:5px;text-transform:uppercase}
+#ownedCards .pcard .pos,#ownedCards .pcard .rar{font-size:10px;color:#f2d68a}
+#ownedCards .pcard .flag{font-size:18px}
+#ownedNames{display:none}
+.albumTabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.albumTabs button{flex:1;min-width:110px}
+@media(max-width:420px){#ownedCards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#ownedCards .pcard{min-height:207px}}
+
+.portraitBox{position:relative;height:142px;overflow:hidden;border-radius:9px;background:linear-gradient(150deg,#527b69,#112b25);margin:8px 0}
+.portraitBox .portraitInitial{position:absolute;inset:0;display:grid;place-items:center;font-size:45px;font-weight:1000;color:#d3e7da}
+.portraitBox .playerPhoto{position:relative;width:100%;height:100%;object-fit:cover;object-position:center top;margin:0}
+#ownedCards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#ownedCards .pcard{min-width:0;position:relative;overflow:hidden;border:3px solid #d8b251;border-radius:16px;background:linear-gradient(135deg,#e4b958,#192e28 22%,#0b2019 78%,#b88b31);color:white;padding:8px}
+#ownedCards .pcard .rating{font-size:28px;color:#fff0b4}
+#ownedCards .pcard .pname{font-size:14px;font-weight:900;background:#091812;border-radius:6px;padding:7px 3px}
+#ownedCards .pcard .pos,#ownedCards .pcard .rar{color:#e9d18d;font-size:10px}
+#ownedNames{display:none}
+.sourceRating{font-size:9px;letter-spacing:.8px;color:#e3d19b;margin-top:4px;font-weight:800}
+
+.upgradeProgress{background:#09251c;border:1px solid #bfa34d;border-radius:7px;margin-top:7px;padding:5px 3px;font-size:10px;font-weight:900;color:#ffe18a}
+.tradeBtn{font-size:10px!important;padding:7px 3px!important;width:100%;margin-top:5px}
+
+/* Tap-to-flip player dossier */
+#ownedCards .pcard[data-player-id]{cursor:pointer;touch-action:manipulation}
+#ownedCards .pcard[data-player-id]:focus-visible{outline:3px solid #81edb2;outline-offset:3px}
+.flipOverlay{display:none;position:fixed;inset:0;z-index:10020;background:rgba(1,13,9,.94);overflow:auto;padding:22px 14px 40px;align-items:flex-start;justify-content:center}
+.flipOverlay.open{display:flex}
+.flipDialog{width:min(100%,440px);margin:auto;position:relative;color:#fff}
+.flipTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.flipTop button,.flipAction{border:1px solid #bd9a43;background:#142d22;color:#fff;border-radius:11px;padding:11px 14px;font-weight:800}
+.flipCard{border:3px solid #d9b650;border-radius:24px;background:linear-gradient(145deg,#e2ba56,#0b1c18 13%,#102b23 87%,#c39a39);box-shadow:0 12px 36px #000b;padding:18px;min-height:510px}
+.flipCard h2{color:#ffe7a0;font-size:25px;line-height:1.15;margin:5px 0 8px}
+.flipCard .portraitBox{height:290px;margin:15px 0}
+.flipCard .portraitInitial{font-size:90px}
+.flipCard .rating{font-size:44px;color:#ffe8a0;font-weight:1000}
+.flipMeta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.flipMeta div{background:#061710bb;border:1px solid #5e7158;border-radius:10px;padding:10px 9px;min-width:0}
+.flipMeta small{display:block;color:#c5d1c3;font-size:11px;margin-bottom:4px}
+.flipMeta b{font-size:14px;overflow-wrap:anywhere}
+.flipCard .flipAction{width:100%;margin-top:10px;background:#d5b352;color:#092016}
+.flipNote{color:#b8c8be;font-size:12px;line-height:1.5}
+body.flipOpen{overflow:hidden}
+.careerFacts{padding:12px;background:#071b15;border:1px solid #937939;border-radius:12px;margin:12px 0;color:#f4dfaa}
+.careerFacts strong{font-size:12px}.careerFacts p{font-size:13px;margin:5px 0 12px;color:#e5ebe5;line-height:1.5}
+.wcGroup{border:1px solid #d1b15a;border-radius:14px;padding:12px;margin-top:14px;background:#102e25;color:#fff}.wcGroup h3{color:#f4d26d}.wcTable{display:grid;grid-template-columns:minmax(0,1fr) 32px 36px 32px;gap:8px 4px;font-size:12px;align-items:center}.wcTable b{color:#e9c65b}.wcMatches{display:grid;gap:6px}.wcMatches>div{background:#e6eee7;color:#143628;padding:10px;border-radius:9px;font-size:13px;font-weight:700}
+
+.wcSquad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:12px 0}.wcSquadCard{border:1px solid #d8b557;border-radius:10px;background:linear-gradient(145deg,#172d25,#071510);color:#fff;min-width:0;padding:10px 4px;text-align:center;display:flex;flex-direction:column;gap:5px}.wcSquadCard strong{font-size:22px;color:#ffe08c}.wcSquadCard span{font-size:23px}.wcSquadCard small{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wcTactics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.wcTactics button{font-size:11px;padding:10px 3px}.wcResult{background:#071711;border:1px solid #bd9c43;border-radius:12px;margin-top:14px;padding:14px;text-align:center}.wcResult h2{color:#f6d270;font-size:19px}.wcResult small{color:#e6cb79}.wcResult p{font-size:12px;color:#b6c6bd}
+
+.wcLiveBox{background:#071c27;color:white;border:2px solid #c5a048;border-radius:16px;padding:12px;margin:12px 0}.wcScoreboard{display:flex;justify-content:space-between;align-items:center;gap:6px;text-align:center}.wcScoreboard strong{font-size:11px;flex:1}.wcScoreboard b{font-size:28px;color:#f8d26b;white-space:nowrap}.wcClock{text-align:center;font-size:13px;margin:8px;color:#f9df97}.wcField{height:270px;max-width:440px;margin:auto;position:relative;overflow:hidden;border:3px solid #e3f4e2;border-radius:5px;background:repeating-linear-gradient(0deg,#166c40 0px,#166c40 34px,#1d8049 34px,#1d8049 68px)}.wcField:before{content:"";position:absolute;top:50%;width:100%;border-top:2px solid #b5e2c2}.wcCenter{position:absolute;width:75px;height:75px;border:2px solid #b5e2c2;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}.wcPenalty{position:absolute;left:25%;width:50%;height:14%;border:2px solid #b5e2c2}.wcPenalty.top{top:0}.wcPenalty.bottom{bottom:0}.wcDot{position:absolute;display:flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;font-size:9px;font-weight:900;transition:left .35s,top .35s;z-index:2;box-shadow:0 1px 5px #000}.wcDot.home{background:#e93835;border:1px solid white}.wcDot.away{background:#f4f0d9;border:1px solid #142b2b;color:#153525;width:16px;height:16px}.wcBall{position:absolute;z-index:3;transition:left .35s,top .35s}.wcLiveControls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:10px 0}.wcLiveControls button{font-size:11px;padding:10px 2px}.wcCommentary{margin-top:12px;display:grid;gap:5px}.wcCommentary div{background:#143342;border-radius:7px;padding:8px;font-size:12px}.wcSubPicker{gap:7px;padding:10px;border:1px solid #d2b056;border-radius:10px;margin-top:8px}.wcSubPicker button{font-size:12px}
+.wcMoving{animation:wcRun 3s ease-in-out infinite alternate;will-change:transform;transition:none!important}
+.wcBallMoving{animation:wcBallRun 2.8s ease-in-out infinite alternate;will-change:transform;transition:none!important;font-size:16px}
+@keyframes wcRun{0%{transform:translate(-10px,-9px)}35%{transform:translate(var(--dx),var(--dy))}70%{transform:translate(8px,12px)}100%{transform:translate(-4px,4px)}}
+@keyframes wcBallRun{0%{transform:translate(-55px,60px)}25%{transform:translate(65px,-35px)}50%{transform:translate(90px,55px)}75%{transform:translate(-60px,-65px)}100%{transform:translate(15px,20px)}}
+@media(prefers-reduced-motion:reduce){.wcMoving,.wcBallMoving{animation:none}}
+.wcVideoField .wcPenalty{top:23%;height:54%;width:15%;left:auto;bottom:auto;border:2px solid #d9f5e2;box-sizing:border-box}.wcVideoField .wcPenalty.left{left:0;right:auto;border-left:0}.wcVideoField .wcPenalty.right{right:0;left:auto;border-right:0}.wcVideoField .wcGoal{position:absolute;top:40%;height:20%;width:2.5%;border:2px solid #fff;box-sizing:border-box;background:repeating-linear-gradient(0deg,#ffffff22 0px,#ffffff22 3px,transparent 3px,transparent 7px);z-index:1}.wcVideoField .wcGoal.left{left:0;border-left:0}.wcVideoField .wcGoal.right{right:0;border-right:0}.wcVideoField .wcDot.keeper{box-shadow:0 0 0 2px #ffffff88,0 2px 6px #001a15;z-index:6!important}.wcVideoField{height:265px;position:relative;border-radius:13px;box-shadow:inset 0 0 65px #031c1a,0 9px 26px #0008;background:repeating-linear-gradient(90deg,#146d41 0%,#146d41 12.5%,#197b49 12.5%,#197b49 25%)}.wcVideoField .wcDot{transition:left .095s linear,top .095s linear;width:17px;height:17px;border-radius:50%;box-shadow:0 2px 5px #001a15a8;border:2px solid #fff}.wcVideoField .wcDot.away{background:#ffd44d;color:#202b30;border:2px solid #402b05;width:17px;height:17px;z-index:4}.wcVideoField .wcDot.home{background:#e93e4a;color:white;z-index:4}.wcVideoField .wcBall{transition:none;filter:drop-shadow(0 2px 2px #000);font-size:16px}.wcSceneBanner{position:absolute;top:6px;left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:15px;background:#051b1dcc;color:#ffe58a;font-weight:900;font-size:11px;white-space:nowrap;z-index:5}.wcLiveCaption{background:#123c44;color:#fff2c0;padding:12px;border-radius:9px;margin-top:10px;font-size:13px;font-weight:700;min-height:48px}
+
+/* Clear team identity on small mobile screens */
+.wcTeamLabel{display:inline-flex;align-items:center;justify-content:center;border-radius:9px;padding:7px 8px;line-height:1.3;text-align:center;font-size:clamp(11px,3vw,15px);min-width:0}
+.wcTeamHome{background:#a72537;color:white;border:1px solid #ff9ca5}
+.wcTeamAway{background:#e5b32d;color:#192320;border:1px solid #ffeb8c}
+.wcPitchSide{position:absolute;bottom:8px;z-index:3;font-size:10px;font-weight:900;padding:4px 6px;border-radius:6px;pointer-events:none;box-shadow:0 2px 7px #0009}
+.wcPitchHome{left:8px;background:#a72537;color:white}.wcPitchAway{right:8px;background:#e5b32d;color:#172c24}
+.wcPossession{padding:9px 12px;border-radius:9px;font-size:13px;font-weight:900;margin-top:10px;text-align:center;transition:background .2s}
+.wcPossession.isHome{background:#8d2333;color:#fff}.wcPossession.isAway{background:#e5b32d;color:#17251c}
+.wcVideoField .wcDot.wcBallCarrier{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 7px #ffffff44,0 0 15px #fff;z-index:10!important}
+.wcVideoField .wcDot.wcPressing{outline:2px dashed #f8fafc;outline-offset:3px}
+.wcPlayerSpotlight{margin-top:8px;padding:10px 12px;border-radius:9px;font-weight:850;text-align:center;font-size:14px;background:#283a46;color:white}.wcPlayerSpotlight.home{border-left:5px solid #ff5666}.wcPlayerSpotlight.away{border-left:5px solid #ffd44d}
+
+/* 2.0 Kartenanzeige: stabile Grössen, Portrait-Fallback, kein abgeschnittener Inhalt */
+#ownedCards .pcard,#packRevealCards .pcard{aspect-ratio:auto!important;min-height:0!important;height:auto!important;display:flex;flex-direction:column;align-items:stretch;overflow:hidden;gap:3px}
+#ownedCards .pcard .portraitBox,#packRevealCards .pcard .portraitBox{height:155px!important;flex:0 0 155px;margin:9px 0 4px!important}
+#ownedCards .pcard .pname,#packRevealCards .pcard .pname{line-height:1.25;min-height:2.5em;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere;hyphens:auto}
+#ownedCards .pcard .pos,#ownedCards .pcard .rar,#packRevealCards .pcard .pos{line-height:1.4;overflow-wrap:anywhere}
+.portraitBox .portraitInitial{background:linear-gradient(155deg,#365f52,#10261f);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.portraitShirt{font-size:47px;filter:grayscale(.25);line-height:1.1}.portraitLetters{font-size:20px;color:#e8f1e9;font-weight:900;letter-spacing:2px}
+.flipCard .portraitShirt{font-size:100px}.flipCard .portraitLetters{font-size:30px}
+.portraitBox .playerPhoto{position:absolute!important;inset:0;width:100%!important;height:100%!important;object-fit:cover;object-position:center top;z-index:1}
+#ownedCards .pcard .rating{z-index:3}
+@media(max-width:420px){#ownedCards{grid-template-columns:repeat(2,minmax(0,1fr))}#ownedCards .pcard{padding:7px!important}}
+
+/* Karten-Redesign: klare Hierarchie und unbeschnittene Spielerporträts */
+#ownedCards{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr))!important;gap:14px!important;align-items:stretch}
+#ownedCards .pcard{display:flex!important;flex-direction:column!important;gap:0!important;min-height:0!important;height:auto!important;aspect-ratio:auto!important;padding:10px!important;border:2px solid #d8b35d!important;border-radius:17px!important;background:linear-gradient(155deg,#d6b25b 0%,#a27d35 3%,#18362d 14%,#10241f 85%,#99732c 100%)!important;box-shadow:0 7px 18px #0005!important}
+#ownedCards .pcard .portraitBox{width:100%;height:auto!important;flex:none!important;aspect-ratio:4/3;margin:0 0 8px!important;background:radial-gradient(ellipse at 50% 70%,#426b5a,#122b25 75%)!important;border:1px solid #ffffff33;border-radius:10px!important;overflow:hidden}
+#ownedCards .pcard .portraitBox .playerPhoto{width:100%!important;height:100%!important;position:absolute!important;inset:0!important;object-fit:contain!important;object-position:center center!important;margin:0!important;background:transparent!important;border-radius:0!important}
+#ownedCards .pcard .rating{top:15px!important;left:15px!important;font-size:25px!important;line-height:1!important;padding:5px 7px;background:#091d19e8;border:1px solid #e4c270;border-radius:8px;color:#ffe7a0!important;text-shadow:none!important}
+#ownedCards .pcard .flag{font-size:22px!important;line-height:1.15!important;margin:0 0 5px!important}
+#ownedCards .pcard .pname{background:transparent!important;color:#fff7d9!important;font-size:15px!important;line-height:1.2!important;min-height:2.4em!important;margin:0 0 4px!important;padding:0 3px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow-wrap:anywhere}
+#ownedCards .pcard .pos{font-size:11px!important;color:#e7eee6!important;margin:0 0 5px!important}
+#ownedCards .pcard .rar{font-size:10px!important;color:#f3d68b!important;margin:0!important}
+#ownedCards .pcard .sourceRating{font-size:9px!important;margin:6px 0 0!important;opacity:.8}
+#ownedCards .pcard .upgradeProgress{margin-top:auto!important;padding:8px 3px!important;border-radius:8px!important;font-size:10px!important}
+#ownedCards .pcard .tradeBtn{margin-top:6px!important}
+.flipCard .portraitBox{background:radial-gradient(ellipse at center,#456b5a,#142b24)!important}
+.flipCard .portraitBox .playerPhoto{object-fit:contain!important;object-position:center center!important}
+@media(max-width:480px){#ownedCards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}#ownedCards .pcard{padding:7px!important}#ownedCards .pcard .pname{font-size:12px!important}#ownedCards .pcard .rating{font-size:21px!important;top:10px!important;left:10px!important}}
+.wcNameEditor{margin:12px 0 16px;padding:13px;border:1px solid #c9aa5860;border-radius:13px;background:#071c16;color:#fff}.wcNameEditor label{display:block;font-weight:800;margin-bottom:9px}.wcNameRow{display:flex;gap:8px;align-items:stretch}.wcNameRow input{min-width:0;flex:1;border:1px solid #bba86b;border-radius:9px;padding:11px;font-size:16px;background:#f8f6e9;color:#11251e}.wcNameRow button{white-space:nowrap}.wcNameEditor small{display:block;margin-top:7px;color:#b9c7c0;font-size:12px}@media(max-width:380px){.wcNameRow{flex-wrap:wrap}.wcNameRow button{width:100%}}
+</style><meta name="theme-color" content="#09291d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fussballwelt">
+<meta name="application-name" content="Meine Fussballwelt">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="manifest" href="./manifest.webmanifest">
+</head><body>
+<header><div class="logo">⚽ MEINE WM-FUSSBALLWELT <small>V30</small></div><div class="grow"></div><button id="usersBtn" class="btn dark" style="display:none">👥 Benutzer</button></header>
+<main>
+<section id="profiles" class="screen on"><div class="panel"><h1>⚽ Wer spielt heute?</h1><p class="muted">Jeder Spieler hat seine eigene Fussballwelt – ohne Passwort.</p><div id="userList" class="users"></div><button id="newUserBtn" class="btn green wide">➕ Neuer Spieler</button><div id="newUserBox" style="display:none;margin-top:14px"><h3>Neues Profil</h3><input id="newName" maxlength="16" placeholder="Name"><div id="avatarList" class="avatars"></div><button id="createBtn" class="btn green wide">Profil erstellen</button></div></div></section>
+<section id="home" class="screen"><div class="panel"><div style="display:flex;align-items:center;gap:10px"><span id="headAvatar" class="avatar">⚽</span><div><h2 id="headName">Spieler</h2><div class="stats"><span class="pill">LEVEL <b id="level">1</b></span><span class="pill">🪙 <b id="coins">200</b></span><span class="pill">⭐ <b id="xp">0</b> XP</span><span class="pill">🎁 <b id="packs">1</b> PACKS</span></div></div></div></div><div class="grid">
+<button class="tile" data-go="quiz"><span class="ico">🧠</span><b>Quiz-Arena</b><small>Fussballwissen testen</small></button>
+<button class="tile" data-go="who"><span class="ico">🕵️</span><b>Wer bin ich?</b><small>Spieler erraten</small></button>
+<button class="tile" data-go="stadium"><span class="ico">🏟️</span><b>Stadion-Quiz</b><small>Bild ansehen & Stadion erkennen</small></button>
+<button class="tile" data-go="album"><span class="ico">🃏</span><b>Sammelalbum</b><small>Stars & Legenden sammeln</small></button>
+<button class="tile" data-go="team"><span class="ico">👕</span><b>Meine Mannschaft</b><small>11er-Team aufstellen</small></button>
+<button class="tile" data-go="journey"><span class="ico">🗺️</span><b>Fussballreise</b><small>Welten freischalten</small></button>
+<button class="tile" data-go="worldcup"><span class="ico">🏆</span><b>Meine Weltmeisterschaft</b><small>Mit deinem Team um den Pokal spielen</small></button>
+<button class="tile" data-go="career"><span class="ico">🏆</span><b>Karriere</b><small>Spiele gewinnen</small></button></div><button id="backupGo" class="btn dark wide" style="margin-top:14px">💾 Spielstand sichern / übertragen</button></section>
+<section id="quiz" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🧠 Quiz-Arena</h2><div class="stats" style="margin-bottom:10px"><button class="btn dark qdiff" data-diff="easy">Einfach</button><button class="btn dark qdiff" data-diff="medium">Mittel</button><button class="btn dark qdiff" data-diff="hard">Schwer</button><button class="btn green qdiff" data-diff="mix">Gemischt</button></div><div id="quizMeta" class="muted"></div><div id="question" class="question"></div><div id="answers" class="answers"></div></div></section>
+<section id="stadium" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🏟️ Welches Stadion ist das?</h2><img id="stadiumImg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:15px;margin:12px 0"><div id="stadiumAnswers" class="answers"></div>
+<div id="stadiumResult" style="display:none;margin-top:12px;font-weight:900;text-align:center"></div>
+<button id="nextStadium" class="btn green" style="display:none;width:100%;margin-top:10px">NÄCHSTES STADION →</button>
+<p class="muted">Für die Stadionbilder wird eine Internetverbindung benötigt.</p></div></section>
+<section id="who" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🕵️ Wer bin ich?</h2><div class="muted">Je früher du den Spieler erkennst, desto grösser die Belohnung.</div><div id="whoHints" style="margin:15px 0"></div><div id="whoChoices" class="answers"></div><button id="nextHint" class="btn gold" style="width:100%;margin-top:10px">💡 Nächster Hinweis</button><div id="whoReward" class="muted" style="margin-top:10px"></div></div></section>
+<section id="album" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🃏 Sammelalbum</h2><p class="muted"><span id="albumCount"></span> • 100 Pack-Punkte = 1 Gratis-Pack • zusätzliche Packs können mit Münzen gekauft werden.</p>
+<div id="nationFilters" class="stats" style="margin:10px 0"></div>
+<div class="panel" style="margin-top:10px">
+<h3>🎒 MEINE PACKS</h3>
+<div id="packInventory" class="muted"></div>
+<button id="openPack" class="btn green wide" style="margin-top:8px">🎁 Gratis-Pack öffnen</button>
+<button id="openStandardPack" class="btn green wide" style="margin-top:8px">🎁 Standard-Pack öffnen</button>
+<button id="openGoldPack" class="btn gold wide" style="margin-top:8px">🌟 Gold-Pack öffnen</button>
+</div>
+<div class="panel" style="margin-top:12px">
+<h3>🛒 PACK-SHOP</h3>
+<div class="muted">Nur mit erspielten Münzen – keine echten Käufe.</div>
+<button id="buyStandard" class="btn gold wide" style="margin-top:8px">🎁 STANDARD-PACK – 250 🪙</button>
+<button id="buyGold" class="btn gold wide" style="margin-top:8px">🌟 GOLD-PACK – 600 🪙</button>
+<div class="muted" style="margin-top:7px">Gold-Pack: 40% Chance auf Stärke 86–90 und 10% auf 91+. Länder werden abwechslungsreich gezogen; im 3er-Pack möglichst drei verschiedene Nationen.</div>
+</div><div style="margin-top:18px"><h3>🃏 MEINE SPIELER <span id="ownedCount"></span></h3><p class="muted">FC-26-Basiswerte bei überprüften Spielern (FC 26); andere Werte als SPIELWERT gekennzeichnet. Doppelte Karten: 3=Silber (+1), 6=Gold (+2), 10=Diamant (+3). Weitere Duplikate bringen Münzen. Fotos benötigen Internet.</p><p class="muted">Deine freigeschalteten Sammelkarten – tippe auf eine Karte, um sie umzudrehen.</p>
+<div id="ownedNames" style="padding:10px;background:#e8f5eb;color:#163c26;border-radius:10px;margin-top:8px;font-weight:700"></div><div id="ownedCards" class="cardgrid" style="margin-top:10px"></div></div>
+<div style="margin-top:22px"><h3>🔒 NOCH NICHT FREIGESCHALTET</h3>
+<div id="lockedCards" class="cardgrid" style="margin-top:10px"></div></div></div></section>
+<section id="team" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>👕 Meine Mannschaft</h2><h3 style="text-align:center">TEAMSTÄRKE <span id="teamRating">–</span></h3><p class="muted" style="text-align:center">4-3-3 • Position antippen und passenden Spieler wählen</p><div id="pitch" class="pitch"></div><h3 id="chooseLabel">Position wählen</h3><div id="chooser" class="chooser"></div></div></section>
+<section id="journey" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🗺️ Fussballreise</h2><div id="worlds"></div></div></section>
+<section id="backup" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>💾 Spielstand sichern</h2><p class="muted">Sichere deine Karten, Münzen, Mannschaft und WM als Datei. Besonders wichtig, bevor du eine neue Version ausprobierst.</p><button id="backupExport" class="btn gold wide">⬇️ Spielstand exportieren</button><label class="btn dark wide" style="display:block;text-align:center;margin-top:12px;cursor:pointer">⬆️ Spielstand importieren<input id="backupImport" type="file" accept=".json,application/json" style="display:none"></label><p id="backupStatus" class="muted" role="status"></p></div></section>
+<section id="worldcup" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🏆 Meine Weltmeisterschaft</h2><p class="muted">Dein eigenes Sammelkarten-Team gegen sieben Nationalmannschaften. Spielbare Mini-WM: zwei Gruppen, Halbfinal und Finale. Eigene Aufstellung und Taktik beeinflussen die Simulation.</p><div id="wcInfo"></div><div id="wcLineup"></div><div id="wcLive"></div><div id="wcLivePitch"></div><div id="wcGroups"></div><div id="wcFixtures"></div><button id="wcPlay" class="btn gold wide" style="margin:12px 0">⚽ Nächstes Spiel</button><button id="wcReset" class="btn dark wide">↻ Neue WM starten</button></div></section>
+<section id="career" class="screen"><button class="btn dark back">← Home</button><div class="panel"><h2>🏆 Karriere</h2><div id="careerInfo"></div><button id="playMatch" class="btn green wide">⚽ Spiel starten</button><div id="matchResult" style="margin-top:12px"></div></div></section>
+</main>
+<div id="packReveal" style="display:none;position:fixed;inset:0;background:rgba(5,12,9,.96);z-index:9999;overflow:auto;padding:22px 14px">
+<div style="max-width:720px;margin:auto;text-align:center">
+<h1 id="packRevealTitle" style="color:#f5cf58">🎁 PACK GEÖFFNET!</h1>
+<div id="packRevealCards" class="cardgrid" style="margin:18px auto"></div>
+<button id="closePackReveal" class="btn gold wide">WEITER →</button>
+</div></div>
+<div id="modal" class="modal"><div class="modalbox"><h2 id="modalTitle"></h2><div id="modalText"></div><button id="modalOk" class="btn green wide" style="margin-top:14px">OK</button></div></div>
+<div id="playerFlip" class="flipOverlay" role="dialog" aria-modal="true" aria-label="Spielerkarte">
+<div class="flipDialog"><div class="flipTop"><b id="flipHeading">🃏 SPIELERKARTE</b><button id="flipClose" type="button">✕ Schliessen</button></div><div id="flipContent"></div></div></div>
+<script>
+"use strict";
+const KEY_USERS="fw10_users",KEY_PREFIX="fw10_state_";
+const AVATARS=["⚽","🦁","🐯","🦊","🐺","🦅","🔥","⭐"];
+const PLAYERS=[
+["mbappe","Kylian Mbappé","ST","94","🇫🇷","WM-STAR",""],
+["haaland","Erling Haaland","ST","94","🇳🇴","WM-STAR",""],
+["yamal","Lamine Yamal","RF","92","🇪🇸","WM-STAR",""],
+["bellingham","Jude Bellingham","ZOM","92","🏴","WM-STAR",""],
+["vini","Vinícius Júnior","LF","93","🇧🇷","WM-STAR",""],
+["kane","Harry Kane","ST","93","🏴","WM-STAR",""],
+["salah","Mohamed Salah","RF","92","🇪🇬","WM-STAR",""],
+["rodri","Rodri","ZDM","91","🇪🇸","WM-STAR",""],
+["pedri","Pedri","ZM","90","🇪🇸","WM-STAR",""],
+["vandijk","Virgil van Dijk","IV","91","🇳🇱","WM-STAR",""],
+["hakimi","Achraf Hakimi","RV","90","🇲🇦","WM-STAR",""],
+["mendes","Nuno Mendes","LV","89","🇵🇹","WM-STAR",""],
+["courtois","Thibaut Courtois","TW","91","🇧🇪","WM-STAR",""],
+["kobel","Gregor Kobel","TW","89","🇨🇭","WM-SCHWEIZ",""],
+["akanji","Manuel Akanji","IV","87","🇨🇭","WM-SCHWEIZ",""],
+["xhaka","Granit Xhaka","ZM","88","🇨🇭","WM-SCHWEIZ",""],
+["embolo","Breel Embolo","ST","84","🇨🇭","WM-SCHWEIZ",""],
+["ndoye","Dan Ndoye","RF","84","🇨🇭","WM-SCHWEIZ",""],
+["zakaria","Denis Zakaria","ZDM","86","🇨🇭","WM-SCHWEIZ",""],
+["messi","Lionel Messi","ZOM","95","🇦🇷","WM-STAR",""],
+["cr7","Cristiano Ronaldo","ST","95","🇵🇹","WM-STAR",""],
+["modric","Luka Modrić","ZM","94","🇭🇷","WM-STAR",""],
+["neymar","Neymar","LF","94","🇧🇷","WM-STAR",""],
+["alisson","Alisson","TW","90","🇧🇷","WM-STAR",""],
+["saliba","William Saliba","IV","89","🇫🇷","WM-STAR",""],
+["rudiger","Antonio Rüdiger","IV","89","🇩🇪","WM-STAR",""],
+["dias","Rúben Dias","IV","90","🇵🇹","WM-STAR",""],
+["theo","Theo Hernández","LV","89","🇫🇷","WM-STAR",""],
+["trent","Trent Alexander-Arnold","RV","89","🏴","WM-STAR",""],
+["valverde","Federico Valverde","ZM","91","🇺🇾","WM-STAR",""],
+["musiala","Jamal Musiala","ZOM","91","🇩🇪","WM-STAR",""],
+["wirtz","Florian Wirtz","ZOM","91","🇩🇪","WM-STAR",""],
+["odegaard","Martin Ødegaard","ZOM","90","🇳🇴","WM-STAR",""],
+["saka","Bukayo Saka","RF","91","🏴","WM-STAR",""],
+["lewandowski","Robert Lewandowski","ST","91","🇵🇱","WM-STAR",""],
+["lautaro","Lautaro Martínez","ST","91","🇦🇷","WM-STAR",""],
+["vargas","Ruben Vargas","LF","84","🇨🇭","WM-SCHWEIZ",""],
+["maignan","Mike Maignan","TW","89","🇫🇷","WM-STAR","Frankreich"],
+["kounde","Jules Koundé","RV","89","🇫🇷","WM-STAR","Frankreich"],
+["upamecano","Dayot Upamecano","IV","88","🇫🇷","WM-STAR","Frankreich"],
+["camavinga","Eduardo Camavinga","ZM","89","🇫🇷","WM-STAR","Frankreich"],
+["tchouameni","Aurélien Tchouaméni","ZDM","89","🇫🇷","WM-STAR","Frankreich"],
+["dembele","Ousmane Dembélé","RF","93","🇫🇷","WM-STAR","Frankreich"],
+["olise","Michael Olise","RF","90","🇫🇷","WM-STAR","Frankreich"],
+["thuram","Marcus Thuram","ST","88","🇫🇷","WM-STAR","Frankreich"],
+["desire","Désiré Doué","LF","90","🇫🇷","WM-STAR","Frankreich"],
+["unai","Unai Simón","TW","88","🇪🇸","WM-STAR","Spanien"],
+["carvajal","Dani Carvajal","RV","88","🇪🇸","WM-STAR","Spanien"],
+["cucurella","Marc Cucurella","LV","87","🇪🇸","WM-STAR","Spanien"],
+["laporte","Aymeric Laporte","IV","87","🇪🇸","WM-STAR","Spanien"],
+["zubimendi","Martín Zubimendi","ZDM","89","🇪🇸","WM-STAR","Spanien"],
+["olmo","Dani Olmo","ZOM","90","🇪🇸","WM-STAR","Spanien"],
+["nico","Nico Williams","LF","90","🇪🇸","WM-STAR","Spanien"],
+["oyarzabal","Mikel Oyarzabal","ST","88","🇪🇸","WM-STAR","Spanien"],
+["ferran","Ferran Torres","ST","87","🇪🇸","WM-STAR","Spanien"],
+["pickford","Jordan Pickford","TW","88","🏴","WM-STAR","England"],
+["stones","John Stones","IV","88","🏴","WM-STAR","England"],
+["guehi","Marc Guéhi","IV","87","🏴","WM-STAR","England"],
+["rice","Declan Rice","ZDM","91","🏴","WM-STAR","England"],
+["palmer","Cole Palmer","ZOM","91","🏴","WM-STAR","England"],
+["foden","Phil Foden","ZOM","90","🏴","WM-STAR","England"],
+["gordon","Anthony Gordon","LF","87","🏴","WM-STAR","England"],
+["watkins","Ollie Watkins","ST","87","🏴","WM-STAR","England"],
+["eze","Eberechi Eze","ZOM","88","🏴","WM-STAR","England"],
+["baumann","Oliver Baumann","TW","86","🇩🇪","WM-STAR","Deutschland"],
+["tah","Jonathan Tah","IV","88","🇩🇪","WM-STAR","Deutschland"],
+["schlotterbeck","Nico Schlotterbeck","IV","88","🇩🇪","WM-STAR","Deutschland"],
+["raum","David Raum","LV","86","🇩🇪","WM-STAR","Deutschland"],
+["kimmich","Joshua Kimmich","ZDM","90","🇩🇪","WM-STAR","Deutschland"],
+["goretzka","Leon Goretzka","ZM","87","🇩🇪","WM-STAR","Deutschland"],
+["gnabry","Serge Gnabry","RF","87","🇩🇪","WM-STAR","Deutschland"],
+["havertz","Kai Havertz","ST","88","🇩🇪","WM-STAR","Deutschland"],
+["adeyemi","Karim Adeyemi","LF","87","🇩🇪","WM-STAR","Deutschland"],
+["diogo","Diogo Costa","TW","89","🇵🇹","WM-STAR","Portugal"],
+["vitinha","Vitinha","ZM","92","🇵🇹","WM-STAR","Portugal"],
+["bernardo","Bernardo Silva","ZOM","91","🇵🇹","WM-STAR","Portugal"],
+["leao","Rafael Leão","LF","90","🇵🇹","WM-STAR","Portugal"],
+["verbruggen","Bart Verbruggen","TW","87","🇳🇱","WM-STAR","Niederlande"],
+["frimpong","Jeremie Frimpong","RV","89","🇳🇱","WM-STAR","Niederlande"],
+["dejong","Frenkie de Jong","ZM","90","🇳🇱","WM-STAR","Niederlande"],
+["gakpo","Cody Gakpo","LF","89","🇳🇱","WM-STAR","Niederlande"],
+["depay","Memphis Depay","ST","87","🇳🇱","WM-STAR","Niederlande"],
+["dibu","Emiliano Martínez","TW","90","🇦🇷","WM-STAR","Argentinien"],
+["romero","Cristian Romero","IV","89","🇦🇷","WM-STAR","Argentinien"],
+["macallister","Alexis Mac Allister","ZM","90","🇦🇷","WM-STAR","Argentinien"],
+["enzo","Enzo Fernández","ZM","89","🇦🇷","WM-STAR","Argentinien"],
+["julian","Julián Álvarez","ST","91","🇦🇷","WM-STAR","Argentinien"],
+["ederson","Ederson","TW","89","🇧🇷","WM-STAR","Brasilien"],
+["marquinhos","Marquinhos","IV","88","🇧🇷","WM-STAR","Brasilien"],
+["brunoG","Bruno Guimarães","ZM","90","🇧🇷","WM-STAR","Brasilien"],
+["raphinha","Raphinha","RF","92","🇧🇷","WM-STAR","Brasilien"],
+["rodrygo","Rodrygo","RF","90","🇧🇷","WM-STAR","Brasilien"],
+["endrick","Endrick","ST","85","🇧🇷","WM-STAR","Brasilien"],
+["elvedi","Nico Elvedi","IV","84","🇨🇭","WM-SCHWEIZ","Schweiz"],
+["freuler","Remo Freuler","ZM","85","🇨🇭","WM-SCHWEIZ","Schweiz"],
+["aebischer","Michel Aebischer","ZM","83","🇨🇭","WM-SCHWEIZ","Schweiz"],
+["rieder","Fabian Rieder","ZOM","83","🇨🇭","WM-SCHWEIZ","Schweiz"],
+["amsouni","Zeki Amdouni","ST","83","🇨🇭","WM-SCHWEIZ","Schweiz"],
+["pulisic","Christian Pulisic","RF","87","🇺🇸","WM-STAR","USA"],
+["davies","Alphonso Davies","LV","89","🇨🇦","WM-STAR","Kanada"],
+["kubo","Takefusa Kubo","RF","87","🇯🇵","WM-STAR","Japan"],
+["keller","Marvin Keller","TW","76","🇨🇭","WM 2026","Schweiz"],
+["mvogo","Yvon Mvogo","TW","78","🇨🇭","WM 2026","Schweiz"],
+["amenda","Aurèle Amenda","IV","77","🇨🇭","WM 2026","Schweiz"],
+["comert","Eray Cömert","IV","78","🇨🇭","WM 2026","Schweiz"],
+["jaquez","Luca Jaquez","IV","76","🇨🇭","WM 2026","Schweiz"],
+["muheim","Miro Muheim","LV","79","🇨🇭","WM 2026","Schweiz"],
+["rodriguez","Ricardo Rodriguez","LV","81","🇨🇭","WM 2026","Schweiz"],
+["widmer","Silvan Widmer","RV","80","🇨🇭","WM 2026","Schweiz"],
+["fassnacht","Christian Fassnacht","RF","78","🇨🇭","WM 2026","Schweiz"],
+["itten","Cedric Itten","ST","79","🇨🇭","WM 2026","Schweiz"],
+["jashari","Ardon Jashari","ZM","82","🇨🇭","WM 2026","Schweiz"],
+["manzambi","Johan Manzambi","ZM","79","🇨🇭","WM 2026","Schweiz"],
+["okafor","Noah Okafor","LF","81","🇨🇭","WM 2026","Schweiz"],
+["sow","Djibril Sow","ZM","82","🇨🇭","WM 2026","Schweiz"],
+["jose_sa","José Sá","TW","82","🇵🇹","WM 2026","Portugal"],
+["rui_silva","Rui Silva","TW","81","🇵🇹","WM 2026","Portugal"],
+["semedo","Nélson Semedo","RV","81","🇵🇹","WM 2026","Portugal"],
+["tomas_araujo","Tomás Araújo","IV","81","🇵🇹","WM 2026","Portugal"],
+["dalot","Diogo Dalot","RV","84","🇵🇹","WM 2026","Portugal"],
+["inacio","Gonçalo Inácio","IV","84","🇵🇹","WM 2026","Portugal"],
+["cancelo","João Cancelo","RV","85","🇵🇹","WM 2026","Portugal"],
+["matheus_nunes","Matheus Nunes","ZM","82","🇵🇹","WM 2026","Portugal"],
+["bruno_fernandes","Bruno Fernandes","ZOM","87","🇵🇹","WM 2026","Portugal"],
+["renato_veiga","Renato Veiga","IV","79","🇵🇹","WM 2026","Portugal"],
+["joao_neves","João Neves","ZM","86","🇵🇹","WM 2026","Portugal"],
+["ruben_neves","Rúben Neves","ZDM","83","🇵🇹","WM 2026","Portugal"],
+["goncalo_ramos","Gonçalo Ramos","ST","83","🇵🇹","WM 2026","Portugal"],
+["joao_felix","João Félix","ZOM","82","🇵🇹","WM 2026","Portugal"],
+["trincao","Francisco Trincão","RF","83","🇵🇹","WM 2026","Portugal"],
+["conceicao","Francisco Conceição","RF","82","🇵🇹","WM 2026","Portugal"],
+["pedro_neto","Pedro Neto","RF","83","🇵🇹","WM 2026","Portugal"],
+["guedes","Gonçalo Guedes","LF","80","🇵🇹","WM 2026","Portugal"],
+["samuel_costa","Samuel Costa","ZM","79","🇵🇹","WM 2026","Portugal"],
+["livakovic","Dominik Livaković","TW","83","🇭🇷","WM 2026","Kroatien"],
+["stanisic","Josip Stanišić","RV","82","🇭🇷","WM 2026","Kroatien"],
+["pongracic","Marin Pongračić","IV","79","🇭🇷","WM 2026","Kroatien"],
+["gvardiol","Joško Gvardiol","IV","86","🇭🇷","WM 2026","Kroatien"],
+["caleta_car","Duje Ćaleta-Car","IV","79","🇭🇷","WM 2026","Kroatien"],
+["sutalo","Josip Šutalo","IV","81","🇭🇷","WM 2026","Kroatien"],
+["moro","Nikola Moro","ZM","78","🇭🇷","WM 2026","Kroatien"],
+["kovacic","Mateo Kovačić","ZM","84","🇭🇷","WM 2026","Kroatien"],
+["kramaric","Andrej Kramarić","ST","81","🇭🇷","WM 2026","Kroatien"],
+["budimir","Ante Budimir","ST","82","🇭🇷","WM 2026","Kroatien"],
+["pandur","Ivor Pandur","TW","76","🇭🇷","WM 2026","Kroatien"],
+["vlasic","Nikola Vlašić","ZOM","80","🇭🇷","WM 2026","Kroatien"],
+["perisic","Ivan Perišić","LF","81","🇭🇷","WM 2026","Kroatien"],
+["pasalic_mario","Mario Pašalić","ZM","81","🇭🇷","WM 2026","Kroatien"],
+["baturina","Martin Baturina","ZOM","79","🇭🇷","WM 2026","Kroatien"],
+["sucic_petar","Petar Sučić","ZM","79","🇭🇷","WM 2026","Kroatien"],
+["jakic","Kristijan Jakić","ZDM","77","🇭🇷","WM 2026","Kroatien"],
+["fruk","Toni Fruk","ZOM","77","🇭🇷","WM 2026","Kroatien"],
+["matanovic","Igor Matanović","ST","78","🇭🇷","WM 2026","Kroatien"],
+["sucic_luka","Luka Sučić","ZM","80","🇭🇷","WM 2026","Kroatien"],
+["vuskovic","Luka Vušković","IV","79","🇭🇷","WM 2026","Kroatien"],
+["kotarski","Dominik Kotarski","TW","77","🇭🇷","WM 2026","Kroatien"],
+["pasalic_marco","Marco Pašalić","RF","78","🇭🇷","WM 2026","Kroatien"],
+["erlic","Martin Erlić","IV","77","🇭🇷","WM 2026","Kroatien"],
+["musa_petar","Petar Musa","ST","79","🇭🇷","WM 2026","Kroatien"]
+].map(x=>({id:x[0],name:x[1],pos:x[2],rating:x[3],flag:x[4],rarity:x[5],nation:x[6]||""}));
+const QUIZ=[
+["easy", "Wie viele Spieler stehen pro Mannschaft normalerweise zu Beginn auf dem Feld?", ["11", "10", "9", "12"], 0],
+["easy", "Welche Karte bedeutet Platzverweis?", ["Rot", "Gelb", "Grün", "Blau"], 0],
+["easy", "Wie lange dauert ein normales Spiel ohne Nachspielzeit?", ["90 Minuten", "80 Minuten", "100 Minuten", "60 Minuten"], 0],
+["easy", "Wie viele Punkte gibt ein Sieg?", ["3", "2", "1", "4"], 0],
+["easy", "Welche Position hat die Abkürzung TW?", ["Torwart", "Stürmer", "Innenverteidiger", "Mittelfeld"], 0],
+["easy", "Welches Land gewann die WM 2022?", ["Argentinien", "Frankreich", "Brasilien", "Spanien"], 0],
+["easy", "Wer ist als CR7 bekannt?", ["Cristiano Ronaldo", "Ronaldinho", "Ronaldo Nazário", "Rodri"], 0],
+["easy", "Welches Land verbindet man mit Lionel Messi?", ["Argentinien", "Portugal", "Frankreich", "Italien"], 0],
+["easy", "Welche Position spielt Gregor Kobel?", ["Torwart", "Stürmer", "Verteidiger", "Flügel"], 0],
+["easy", "Was passiert bei einem Foul im eigenen Strafraum häufig?", ["Elfmeter", "Eckball", "Einwurf", "Abstoss"], 0],
+["medium", "Welcher Klub spielt im Signal Iduna Park?", ["Borussia Dortmund", "Bayern München", "RB Leipzig", "Schalke 04"], 0],
+["medium", "Welcher Klub spielt im Santiago Bernabéu?", ["Real Madrid", "Atlético Madrid", "FC Barcelona", "Sevilla"], 0],
+["medium", "Welcher Klub ist mit dem Camp Nou verbunden?", ["FC Barcelona", "Valencia", "Real Madrid", "Athletic Bilbao"], 0],
+["medium", "In welcher Stadt steht Wembley?", ["London", "Manchester", "Liverpool", "Birmingham"], 0],
+["medium", "In welcher Stadt steht der St. Jakob-Park?", ["Basel", "Bern", "Zürich", "Genf"], 0],
+["medium", "Welches Land gewann die WM 2010?", ["Spanien", "Niederlande", "Deutschland", "Italien"], 0],
+["medium", "Welches Land gewann die WM 2006?", ["Italien", "Frankreich", "Brasilien", "Deutschland"], 0],
+["medium", "Welches Land gewann die WM 1998?", ["Frankreich", "Brasilien", "Deutschland", "Argentinien"], 0],
+["medium", "Welche Nation gewann die EM 2016?", ["Portugal", "Frankreich", "Spanien", "Italien"], 0],
+["medium", "Welche Position spielt Manuel Akanji hauptsächlich?", ["Innenverteidiger", "Stürmer", "Torwart", "Linksaußen"], 0],
+["medium", "Aus welchem Land kommt Erling Haaland?", ["Norwegen", "Schweden", "Dänemark", "Finnland"], 0],
+["medium", "Aus welchem Land kommt Luka Modrić?", ["Kroatien", "Serbien", "Slowenien", "Slowakei"], 0],
+["medium", "Was ist ein Hattrick?", ["Drei Tore eines Spielers", "Drei gelbe Karten", "Drei Eckbälle", "Drei Auswechslungen"], 0],
+["medium", "Wie nennt man den Pass, nach dem direkt ein Tor erzielt wird?", ["Assist", "Abstoss", "Tackling", "Pressing"], 0],
+["hard", "Wer gewann die erste Fussball-WM 1930?", ["Uruguay", "Brasilien", "Argentinien", "Italien"], 0],
+["hard", "Welches Land gewann die WM 1954?", ["Westdeutschland", "Ungarn", "Brasilien", "Uruguay"], 0],
+["hard", "Welches Land gewann die WM 1966?", ["England", "Westdeutschland", "Brasilien", "Italien"], 0],
+["hard", "Welches Land gewann die WM 1978?", ["Argentinien", "Niederlande", "Brasilien", "Westdeutschland"], 0],
+["hard", "Welches Land gewann die WM 1986?", ["Argentinien", "Westdeutschland", "Frankreich", "Brasilien"], 0],
+["hard", "Welches Land gewann die WM 1990?", ["Westdeutschland", "Argentinien", "Italien", "Brasilien"], 0],
+["hard", "Welche Regelinstanz beschliesst die Laws of the Game?", ["IFAB", "UEFA", "IOC", "CAS"], 0],
+["hard", "Wie weit ist der Elfmeterpunkt von der Torlinie entfernt?", ["11 Meter", "9 Meter", "12 Meter", "15 Meter"], 0],
+["hard", "Wie breit ist ein Fussballtor?", ["7,32 m", "6,50 m", "8,00 m", "7,00 m"], 0],
+["hard", "Wie hoch ist ein Fussballtor?", ["2,44 m", "2,20 m", "2,50 m", "2,32 m"], 0],
+["hard", "Welche Nation gewann die EM 1992?", ["Dänemark", "Deutschland", "Niederlande", "Frankreich"], 0],
+["hard", "Welche Nation gewann die EM 2004?", ["Griechenland", "Portugal", "Spanien", "Italien"], 0],
+["hard", "Wer war Spaniens Kapitän beim WM-Titel 2010?", ["Iker Casillas", "Xavi", "Andrés Iniesta", "David Villa"], 0],
+["hard", "Welche Legende wurde 'Der Kaiser' genannt?", ["Franz Beckenbauer", "Gerd Müller", "Lothar Matthäus", "Johan Cruyff"], 0],
+["hard", "Welche niederländische Legende ist eng mit Total Football verbunden?", ["Johan Cruyff", "Ruud Gullit", "Marco van Basten", "Arjen Robben"], 0],
+["hard", "Welcher Brasilianer war als Linksverteidiger für kraftvolle Freistösse berühmt?", ["Roberto Carlos", "Cafu", "Kaká", "Rivaldo"], 0]
+];
+// Verified FC 26 base ratings from EA's published database; remaining ratings are in-app estimates.
+const FC26_VERIFIED={mbappe:91,salah:91,yamal:89,bellingham:90,haaland:91,vandijk:90,dembele:90,rodri:90};
+const FC26_SOURCES="EA SPORTS FC 26 / SoFIFA (2026)";
+const FC26_POS={mbappe:"ST",salah:"RF",yamal:"RF",bellingham:"ZOM",haaland:"ST",vandijk:"IV",dembele:"ST",rodri:"ZDM"};
+PLAYERS.forEach(p=>{if(FC26_VERIFIED[p.id]!==undefined)p.rating=FC26_VERIFIED[p.id];if(FC26_POS[p.id])p.pos=FC26_POS[p.id]});
+const WHOS=[
+["Kylian Mbappé",["Ich gewann bereits als Teenager die Weltmeisterschaft.","Mein Durchbruch gelang mir im Fürstentum Monaco.","Ich spielte viele Jahre in Paris.","Ich bin französischer Stürmer und mein Vorname beginnt mit K."]],
+["Erling Haaland",["Mein Vater war ebenfalls Profifussballer.","Ich spielte als Profi in Österreich, Deutschland und England.","Ich bin für aussergewöhnlich viele Tore bekannt.","Ich bin ein norwegischer Stürmer."]],
+["Granit Xhaka",["Mein älterer Bruder spielte für eine andere Nationalmannschaft.","Ich war Kapitän eines Londoner Premier-League-Klubs.","Ich wechselte später in die Bundesliga.","Ich bin Schweizer Mittelfeldspieler."]],
+["Gregor Kobel",["Ich wurde in Zürich geboren.","In Deutschland spielte ich zunächst für Augsburg und Stuttgart.","Später wurde ich Nummer 1 bei einem Klub mit gelb-schwarzen Farben.","Ich bin Schweizer Torhüter."]],
+["Lionel Messi",["Ich verliess Südamerika schon als Jugendlicher für Europa.","Ich gewann mehrfach den Ballon d'Or.","2022 gewann ich den grössten Titel mit meiner Nationalmannschaft.","Ich bin Argentiniens berühmte Nummer 10."]],
+["Cristiano Ronaldo",["Meine Profikarriere begann auf einer Atlantikinsel-Nation.","Ein Trainer aus Manchester holte mich früh in die Premier League.","Ich gewann grosse Titel in England, Spanien und Italien.","Meine Initialen und Rückennummer ergeben CR7."]],
+["Ronaldinho",["Ich gewann 2002 die Weltmeisterschaft.","Ich spielte unter anderem in Paris, Barcelona und Mailand.","Ich war für Tricks, Lächeln und spektakuläre Technik bekannt.","Ich bin eine brasilianische Legende mit einem Namen auf -inho."]],
+["Zinedine Zidane",["Meine Eltern stammen aus Algerien.","Ich erzielte in einem WM-Finale zwei Kopfballtore.","Als Trainer gewann ich mehrfach die Champions League.","Ich bin eine französische Nummer-10-Legende."]],
+["Manuel Akanji",["Ich begann meine Profikarriere in der Schweiz.","Ich spielte danach in Dortmund.","Später wechselte ich in die Premier League.","Ich bin Schweizer Innenverteidiger."]],
+["Robert Lewandowski",["Ich wurde in Warschau geboren.","In Deutschland spielte ich für zwei grosse Rivalen.","Ich stellte Torrekorde in der Bundesliga auf.","Ich bin polnischer Mittelstürmer."]],
+["Luka Modrić",["Ich komme aus einem Land an der Adria.","2018 erreichte ich mit meinem Land ein WM-Finale.","Ich gewann den Ballon d'Or.","Ich bin kroatischer Mittelfeldspieler."]],
+["Mohamed Salah",["Ich begann meine europäische Karriere in der Schweiz.","Später spielte ich in England und Italien.","An der Anfield Road wurde ich zum Superstar.","Ich bin ein ägyptischer Rechtsaussen."]],
+["Johan Cruyff",["Ich prägte eine Spielidee weit über meine aktive Karriere hinaus.","Ich war sowohl Spieler als auch Trainer bei einem grossen Klub in Katalonien.","Die Nummer 14 ist eng mit mir verbunden.","Ich bin eine niederländische Legende."]],
+["Diego Maradona",["Ein WM-Viertelfinale 1986 machte zwei meiner Tore weltberühmt.","In Süditalien wurde ich zur Vereinsikone.","Ich führte mein Land 1986 zum WM-Titel.","Ich bin eine argentinische Nummer-10-Legende."]],
+["Pelé",["Ich gewann einen WM-Titel, bevor ich 18 Jahre alt war.","Fast meine gesamte Vereinskarriere verbrachte ich in meinem Heimatland.","Ich gewann als einziger Spieler drei Weltmeisterschaften.","Ich bin eine brasilianische Legende mit vier Buchstaben."]],
+["David Beckham",["Ich gehörte zu einer berühmten Jugendgeneration eines Klubs aus Manchester.","Ich spielte später in Madrid, Los Angeles, Mailand und Paris.","Meine Flanken und Freistösse waren mein Markenzeichen.","Ich bin ein englischer Mittelfeldstar."]]
+];
+const STADIUMS=[
+{name:"Signal Iduna Park",img:"https://img.sparknews.funkemedien.de/406040365/406040365_1711620012_v16_9_1200.jpeg",alts:["Camp Nou","Wembley","St. Jakob-Park"]},
+{name:"Camp Nou",img:"https://www.zerozero.pt/img/estadios/513/63513_ori_camp_nou.jpg",alts:["Santiago Bernabéu","Wembley","Signal Iduna Park"]},
+{name:"Santiago Bernabéu",img:"https://cloudfront-eu-central-1.images.arcpublishing.com/diarioas/3WIMMXB2OFKAJMFTWBHOCD3RIM.jpg",alts:["Camp Nou","San Siro","Wembley"]},
+{name:"Wembley",img:"https://files.structurae.net/files/photos/wikipedia/london-wembley.jpg",alts:["Old Trafford","Camp Nou","Signal Iduna Park"]},
+{name:"St. Jakob-Park",img:"https://w0.peakpx.com/wallpaper/130/249/HD-wallpaper-st-jakob-park-basel-switzerland-swiss-football-stadium-fc-basel-stadium-new-sports-arenas.jpg",alts:["Wankdorf","Letzigrund","Wembley"]}
+];
+const FORM=["TW","LV","IV","IV","RV","ZDM","ZM","ZOM","LF","ST","RF"],ROWS=[[0],[1,2,3,4],[5,6,7],[8,9,10]];
+const WORLDS=[["WM-Bolzplatz",0,0,0],["Juniorenwelt",10,1,5],["Schweiz",30,3,8],["Europa",60,6,12],["Champions",100,10,18],["Weltmeisterwelt",160,15,24]];
+let active="",state=null,avatar="⚽",quizIndex=0,selectedSlot=-1,quizDiff="mix",albumNation="Alle",whoGame=null,whoHint=1;
+const $=id=>document.getElementById(id);
+function base(){return{coins:200,xp:0,level:1,packs:1,correct:0,wins:0,packPoints:0,standardPacks:0,goldPacks:0,cards:{embolo:1,ndoye:1,freuler:1,aebischer:1,elvedi:1},lineup:Array(11).fill(null)}}
+function users(){try{return JSON.parse(localStorage.getItem(KEY_USERS)||"[]")}catch(e){return[]}}
+function saveUsers(a){localStorage.setItem(KEY_USERS,JSON.stringify(a))}
+function save(){if(active&&state)localStorage.setItem(KEY_PREFIX+active,JSON.stringify(state))}
+function load(id){active=id;try{state=JSON.parse(localStorage.getItem(KEY_PREFIX+id))||base()}catch(e){state=base()}normalize()}
+function normalize(){let b=base();state={...b,...state};state.cards=state.cards&&typeof state.cards==="object"?state.cards:{...b.cards};state.lineup=Array.isArray(state.lineup)?state.lineup.slice(0,11):[];while(state.lineup.length<11)state.lineup.push(null)}
+function screen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("on"));$(id).classList.add("on");$("usersBtn").style.display=id==="profiles"?"none":"block";window.scrollTo(0,0)}
+function renderUsers(){$("userList").innerHTML="";let a=users();if(!a.length)$("userList").innerHTML='<p class="muted" style="grid-column:1/-1">Noch kein Profil vorhanden.</p>';a.forEach(u=>{let d=document.createElement("div");d.className="user";let o=document.createElement("button");o.className="userOpen";o.innerHTML=`<div class="avatar">${u.avatar}</div>${u.name}<small style="display:block;margin-top:8px">ÖFFNEN ▶</small>`;o.onclick=()=>{load(u.id);renderHome();screen("home")};let x=document.createElement("button");x.className="delete";x.textContent="🗑️ Löschen";x.onclick=()=>{if(confirm(`${u.name} wirklich löschen?`)){saveUsers(users().filter(z=>z.id!==u.id));localStorage.removeItem(KEY_PREFIX+u.id);renderUsers()}};d.append(o,x);$("userList").appendChild(d)})}
+function renderAvatars(){$("avatarList").innerHTML="";AVATARS.forEach(a=>{let b=document.createElement("button");b.className="av"+(a===avatar?" sel":"");b.textContent=a;b.onclick=()=>{avatar=a;renderAvatars()};$("avatarList").appendChild(b)})}
+$("newUserBtn").onclick=()=>{$("newUserBox").style.display=$("newUserBox").style.display==="none"?"block":"none";renderAvatars()};
+$("createBtn").onclick=()=>{let n=$("newName").value.trim();if(!n)return alert("Bitte Namen eingeben.");let a=users();if(a.some(u=>u.name.toLowerCase()===n.toLowerCase()))return alert("Dieser Name ist bereits vorhanden.");let id="u"+Date.now();a.push({id,name:n.slice(0,16),avatar});saveUsers(a);active=id;state=base();save();active="";state=null;$("newName").value="";$("newUserBox").style.display="none";renderUsers()};
+$("usersBtn").onclick=()=>{save();active="";state=null;renderUsers();screen("profiles")};
+document.querySelectorAll(".back").forEach(b=>b.onclick=()=>{save();renderHome();screen("home")});
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>openPage(b.dataset.go));
+function profile(){return users().find(u=>u.id===active)}
+function renderHome(){let p=profile();if(!p)return;$("headName").textContent=p.name;$("headAvatar").textContent=p.avatar;$("level").textContent=state.level;$("coins").textContent=state.coins;$("xp").textContent=state.xp;$("packs").textContent=state.packs}
+function addPackPoints(n,why=""){
+ state.packPoints=(state.packPoints||0)+n;
+ let earned=0;
+ while(state.packPoints>=100){state.packPoints-=100;state.packs++;earned++}
+ if(earned)showModal("NEUES PACK! 🎁",`Pack-Leiste voll! Du hast ${earned} neues ${earned===1?"Pack":"Packs"} erspielt.`);
+ save();renderHome()
+}
+function addXP(n){state.xp+=n;let l=1+Math.floor(state.xp/100);if(l>state.level){state.level=l;state.coins+=100;showModal("LEVEL UP! 🎉",`Du bist jetzt Level ${l} und erhältst 100 Münzen.`)}save();renderHome()}
+function showModal(t,txt){$("modalTitle").textContent=t;$("modalText").innerHTML=txt;$("modal").classList.add("on")}$("modalOk").onclick=()=>$("modal").classList.remove("on");
+function openPage(id){if(!active)return;screen(id);if(id==="quiz")startQuiz();if(id==="who")startWho();if(id==="stadium")startStadium();if(id==="album")renderAlbum();if(id==="team")renderTeam();if(id==="journey")renderJourney();if(id==="career")renderCareer();if(id==="worldcup")renderWorldCup()}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startQuiz(){let pool=quizDiff==="mix"?QUIZ:QUIZ.filter(q=>q[0]===quizDiff),q=pool[Math.floor(Math.random()*pool.length)],correct=q[2][q[3]],opts=shuffle(q[2]);$("quizMeta").textContent=`${q[0]==="easy"?"Einfach":q[0]==="medium"?"Mittel":"Schwer"} • Richtig insgesamt: ${state.correct}`;$("question").textContent=q[1];$("answers").innerHTML="";opts.forEach(v=>{let b=document.createElement("button");b.className="ans";b.textContent=v;b.onclick=()=>{document.querySelectorAll("#answers button").forEach(x=>x.disabled=true);if(v===correct){b.classList.add("good");state.correct++;let r=q[0]==="hard"?20:q[0]==="medium"?14:10;state.coins+=r;addXP(r);addPackPoints(q[0]==="hard"?14:q[0]==="medium"?10:7,"Quiz")}else b.classList.add("bad");save();setTimeout(startQuiz,700)};$("answers").appendChild(b)})}
+document.querySelectorAll(".qdiff").forEach(b=>b.onclick=()=>{quizDiff=b.dataset.diff;document.querySelectorAll(".qdiff").forEach(x=>x.classList.remove("green"));b.classList.add("green");startQuiz()});
+function startStadium(){
+ let st=STADIUMS[Math.floor(Math.random()*STADIUMS.length)];
+ $("stadiumImg").src=st.img;
+ $("stadiumResult").style.display="none";
+ $("nextStadium").style.display="none";
+ $("stadiumAnswers").innerHTML="";
+ shuffle([st.name,...st.alts]).forEach(v=>{
+  let b=document.createElement("button");b.className="ans";b.textContent=v;
+  b.onclick=()=>{
+   document.querySelectorAll("#stadiumAnswers button").forEach(x=>x.disabled=true);
+   if(v===st.name){
+    b.classList.add("good");
+    state.coins+=20;
+    addXP(15);
+    addPackPoints(15,"Stadion");
+    $("stadiumResult").innerHTML=`✅ RICHTIG! Das ist <b>${st.name}</b>.<br><small>+20 Münzen • +15 XP • +15 Pack-Punkte</small>`;
+   }else{
+    b.classList.add("bad");
+    [...document.querySelectorAll("#stadiumAnswers button")].forEach(x=>{if(x.textContent===st.name)x.classList.add("good")});
+    $("stadiumResult").innerHTML=`❌ Nicht ganz. Das ist <b>${st.name}</b>.`;
+   }
+   $("stadiumResult").style.display="block";
+   $("nextStadium").style.display="block";
+   save();renderHome();
+  };
+  $("stadiumAnswers").appendChild(b)
+ })
+}
+$("nextStadium").onclick=startStadium;
+
+function startWho(){
+ whoGame=WHOS[Math.floor(Math.random()*WHOS.length)];whoHint=1;
+ renderWho()
+}
+function renderWho(){
+ $("whoHints").innerHTML=whoGame[1].slice(0,whoHint).map((h,i)=>`<div class="panel" style="padding:10px;margin:6px 0"><b>Hinweis ${i+1}</b><br>${h}</div>`).join("");
+ let correct=whoGame[0],others=shuffle(WHOS.map(x=>x[0]).filter(x=>x!==correct)).slice(0,3);
+ $("whoChoices").innerHTML="";
+ shuffle([correct,...others]).forEach(name=>{let b=document.createElement("button");b.className="ans";b.textContent=name;b.onclick=()=>guessWho(name,b);$("whoChoices").appendChild(b)});
+ $("nextHint").style.display=whoHint<4?"block":"none";
+ $("whoReward").textContent=`Aktuelle Belohnung: ${[0,40,30,20,10][whoHint]} Münzen • ${[0,30,22,15,8][whoHint]} XP • ${[0,30,22,15,8][whoHint]} Pack-Punkte`;
+}
+$("nextHint").onclick=()=>{if(whoHint<4){whoHint++;renderWho()}};
+function guessWho(name,btn){
+ if(name===whoGame[0]){
+  btn.classList.add("good");let c=[0,40,30,20,10][whoHint],x=[0,30,22,15,8][whoHint],pp=[0,30,22,15,8][whoHint];
+  state.coins+=c;addXP(x);addPackPoints(pp,"Wer bin ich");save();
+  showModal("RICHTIG! 🕵️",`${whoGame[0]} • +${c} Münzen • +${pp} Pack-Punkte`);
+  setTimeout(startWho,500)
+ }else{btn.classList.add("bad");btn.disabled=true;state.coins=Math.max(0,state.coins-2)}
+}
+
+const PLAYER_PHOTOS=Object.create(null);
+const PHOTO_PENDING=new Set();
+const PHOTO_FAILED=new Set();
+const PHOTO_ALIASES={"olise":"Michael Olise","doue":"Désiré Doué","nuno":"Nuno Mendes","cr7":"Cristiano Ronaldo","vini":"Vinícius Júnior","messi":"Lionel Messi","ronaldo9":"Ronaldo (Brazilian footballer)","ronaldinho":"Ronaldinho","pele":"Pelé","maradona":"Diego Maradona","kobel":"Gregor Kobel"};
+function requestPhoto(p){
+ if(PLAYER_PHOTOS[p.id]||PHOTO_PENDING.has(p.id)||PHOTO_FAILED.has(p.id))return;
+ PHOTO_PENDING.add(p.id);
+ let title=PHOTO_ALIASES[p.id]||p.name;
+ async function fetchWiki(lang){
+  let url=`https://${lang}.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=pageimages&piprop=thumbnail&pithumbsize=500&redirects=1&titles=${encodeURIComponent(title)}`;
+  let res=await fetch(url);if(!res.ok)throw Error("Wikipedia");
+  let data=await res.json();return Object.values(data.query?.pages||{})[0]?.thumbnail?.source;
+ }
+ (async()=>{
+  let img=await fetchWiki("en").catch(()=>null);
+  if(!img)img=await fetchWiki("de").catch(()=>null);
+  if(!img)throw Error("no photo");
+  PLAYER_PHOTOS[p.id]=img;
+  document.querySelectorAll('img[data-player-photo="'+p.id+'"]').forEach(el=>{
+    el.onload=()=>{el.classList.add("photoLoaded");el.style.display="block"};
+    el.onerror=()=>{el.classList.remove("photoLoaded");el.style.display="none"};
+    el.src=img;
+  });
+ })().catch(()=>PHOTO_FAILED.add(p.id)).finally(()=>PHOTO_PENDING.delete(p.id));
+}
+function photoHTML(p){
+ requestPhoto(p);
+ let url=PLAYER_PHOTOS[p.id]||"";
+ return `<div class="portraitBox"><div class="portraitInitial"><span class="portraitShirt">👕</span><span class="portraitLetters">${p.name.split(" ").map(x=>x[0]).slice(0,2).join("")}</span></div><img data-player-photo="${p.id}" class="playerPhoto" src="${url}" alt="Foto von ${p.name}" loading="lazy" style="${url?"":"display:none"}" onload="this.classList.add('photoLoaded');this.style.display='block'" onerror="this.classList.remove('photoLoaded');this.style.display='none'"></div>`;
+}
+function cardLevel(id){let n=state.cards[id]||0;return n>=10?4:n>=6?3:n>=3?2:n?1:0}
+function eff(p){return (Number(p.rating)||75)+Math.max(0,cardLevel(p.id)-1)}
+function nextUpgrade(n){return n<3?3:n<6?6:n<10?10:10}
+function tradeValue(p){return p.rating>=91?120:p.rating>=86?80:p.rating>=80?50:30}
+function collectPlayer(p){
+ let n=state.cards[p.id]||0;
+ if(n>=10){state.coins+=tradeValue(p);return {duplicate:true,coins:tradeValue(p)}}
+ state.cards[p.id]=n+1;
+ return {duplicate:n>0,coins:0,upgraded:cardLevel(p.id)>(n>=10?4:n>=6?3:n>=3?2:n?1:0)}
+}
+function sellSurplus(id){
+ let p=PLAYERS.find(x=>x.id===id);if(!p)return;
+ let extra=Math.max(0,(state.cards[id]||0)-10);if(!extra)return;
+ state.cards[id]=10;state.coins+=extra*tradeValue(p);save();renderAlbum();renderHome();
+ showModal("KARTEN GETAUSCHT 🪙",`${extra} doppelte Karten von ${p.name} für ${extra*tradeValue(p)} Münzen eingetauscht!`);
+}
+function renderNationFilters(){
+ let box=$("nationFilters");if(!box)return;
+ let nations=["Alle",...new Set(PLAYERS.map(p=>playerNation(p)))].sort((a,b)=>a==="Alle"?-1:b==="Alle"?1:a.localeCompare(b,"de"));
+ box.innerHTML="";
+ nations.forEach(n=>{let b=document.createElement("button");b.className="btn "+(albumNation===n?"green":"dark");b.style.padding="7px 9px";b.style.fontSize="11px";b.textContent=n;b.onclick=()=>{albumNation=n;renderAlbum()};box.appendChild(b)})
+}
+function playerNation(p){
+ if(p.nation)return p.nation;
+ const map={"🇫🇷":"Frankreich","🇪🇸":"Spanien","🏴":"England","🇩🇪":"Deutschland","🇨🇭":"Schweiz","🇮🇹":"Italien","🇵🇹":"Portugal","🇳🇱":"Niederlande","🇧🇷":"Brasilien","🇦🇷":"Argentinien","🇭🇷":"Kroatien","🇳🇴":"Norwegen","🇲🇦":"Marokko","🇪🇬":"Ägypten","🇺🇸":"USA","🇨🇦":"Kanada","🇯🇵":"Japan","🇺🇾":"Uruguay","🇧🇪":"Belgien","🇵🇱":"Polen"};
+ return map[p.flag]||"Andere"
+}
+function renderAlbum(){
+ let allOwned=PLAYERS.filter(p=>(state.cards[p.id]||0)>0);
+ $("albumCount").textContent=`WM 2026 • ${allOwned.length} / ${PLAYERS.length} Karten (Auswahl)`;
+ $("ownedCount").textContent=`(${allOwned.length})`;
+ $("packInventory").innerHTML=`Gratis: <b>${state.packs||0}</b> • Standard: <b>${state.standardPacks||0}</b> • Gold: <b>${state.goldPacks||0}</b>`;
+ $("openPack").textContent=state.packs?`🎁 Gratis-Pack öffnen (${state.packs})`:"🎁 Kein Gratis-Pack";$("openPack").disabled=!state.packs;
+ $("openStandardPack").textContent=state.standardPacks?`🎁 Standard-Pack öffnen (${state.standardPacks})`:"🎁 Kein Standard-Pack";$("openStandardPack").disabled=!state.standardPacks;
+ $("openGoldPack").textContent=state.goldPacks?`🌟 Gold-Pack öffnen (${state.goldPacks})`:"🌟 Kein Gold-Pack";$("openGoldPack").disabled=!state.goldPacks;
+ renderNationFilters();
+ let match=p=>albumNation==="Alle"||playerNation(p)===albumNation;
+ let owned=PLAYERS.filter(p=>(state.cards[p.id]||0)>0&&match(p)).sort((a,b)=>eff(b)-eff(a));
+ let locked=PLAYERS.filter(p=>!(state.cards[p.id]||0)&&match(p));
+ let ob=$("ownedCards"),lb=$("lockedCards");ob.innerHTML="";lb.innerHTML="";let unknown=Object.keys(state.cards||{}).filter(id=>state.cards[id]>0&&!PLAYERS.some(p=>p.id===id));$("ownedNames").textContent=unknown.length?"🗃️ "+unknown.length+" frühere Karten bleiben im Spielstand gespeichert (nicht in WM-Packs). ":"";$("ownedNames").textContent+=owned.length?"FREIGESCHALTET: "+owned.map(p=>p.name).join(" • "):"Noch keine freigeschalteten Spieler gefunden.";
+ if(!owned.length)ob.innerHTML='<div class="panel" style="grid-column:1/-1"><b>Noch keine freigeschalteten Spieler in diesem Filter.</b><br><span class="muted">Öffne ein Pack – der Spieler erscheint danach genau hier.</span></div>';
+ owned.forEach(p=>{
+  let d=document.createElement("div");d.className="pcard";
+  d.innerHTML=`<div class="rating">${eff(p)}</div>${photoHTML(p)}<div class="flag">${p.flag}</div><div class="pname">${p.name}</div><div class="pos">${p.pos} • ${playerNation(p)}</div><div class="rar">${p.rarity} • ${"⭐".repeat(cardLevel(p.id))}</div><div class="sourceRating">${FC26_VERIFIED[p.id]!==undefined?"FC 26":"SPIELWERT"}</div>
+  <div class="upgradeProgress">${cardLevel(p.id)===4?"💎 DIAMANT • MAX":`${["","🥉 BRONZE","🥈 SILBER","🥇 GOLD"][cardLevel(p.id)]} • ${state.cards[p.id]}/${nextUpgrade(state.cards[p.id])}`}</div>
+  ${(state.cards[p.id]||0)>10?`<button class="btn green tradeBtn" data-trade="${p.id}">🪙 ${state.cards[p.id]-10} Tauschen (+${(state.cards[p.id]-10)*tradeValue(p)})</button>`:""}`;
+  d.dataset.playerId=p.id;d.setAttribute("role","button");d.tabIndex=0;d.setAttribute("aria-label",p.name+" Karte öffnen");
+  d.addEventListener("click",ev=>{if(ev.target.closest("button"))return;openPlayerFlip(p.id)});
+  d.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();openPlayerFlip(p.id)}});
+  ob.appendChild(d);
+  let trade=d.querySelector("[data-trade]");if(trade)trade.onclick=()=>sellSurplus(p.id);
+ });
+ locked.forEach(p=>{
+  let d=document.createElement("div");d.className="pcard lock";
+  d.innerHTML=`<div class="lockedCover"><div class="lockIcon">🔒</div><div class="lockText">NICHT FREIGESCHALTET</div></div><div class="pname">???</div><div class="pos">WM-SPIELER ENTDECKEN</div>`;
+  lb.appendChild(d)
+ })
+}
+function buyCoinPack(gold){
+ let cost=gold?600:250;
+ if(state.coins<cost){showModal("ZU WENIG MÜNZEN 🪙",`Du brauchst ${cost} Münzen. Dir fehlen noch ${cost-state.coins}.`);return}
+ state.coins-=cost;
+ if(gold)state.goldPacks=(state.goldPacks||0)+1;
+ else state.standardPacks=(state.standardPacks||0)+1;
+ save();renderAlbum();renderHome();
+ showModal("PACK GEKAUFT! 🎁",`${gold?"🌟 Gold-Pack":"🎁 Standard-Pack"} wurde deinem Pack-Inventar hinzugefügt.<br><br>Öffne es jetzt im Sammelalbum.`);
+}
+$("buyStandard").onclick=()=>buyCoinPack(false);
+$("buyGold").onclick=()=>buyCoinPack(true);
+function showPackReveal(title,picks){
+ let box=$("packRevealCards");box.innerHTML="";
+ $("packRevealTitle").textContent=title;
+ picks.forEach(p=>{
+  let d=document.createElement("div");d.className="pcard";
+  let media=document.createElement("div");media.innerHTML=photoHTML(p);
+  let rating=document.createElement("div");rating.className="rating";rating.textContent=eff(p);
+  let flag=document.createElement("div");flag.className="flag";flag.textContent=p.flag;
+  let name=document.createElement("div");name.className="pname";name.textContent=p.name;
+  let pos=document.createElement("div");pos.className="pos";pos.textContent=`${p.pos} • ${playerNation(p)}`;
+  let rar=document.createElement("div");rar.className="rar";
+  rar.textContent=p.rarity+" • "+(cardLevel(p.id)===4?"💎 DIAMANT":`${state.cards[p.id]}/${nextUpgrade(state.cards[p.id])} ZUM UPGRADE`);
+  d.append(rating,media,flag,name,pos,rar);box.appendChild(d)
+ });
+ $("packReveal").style.display="block";
+}
+$("closePackReveal").onclick=()=>{$("packReveal").style.display="none";renderAlbum();renderHome()};
+// Pack draws are balanced across nations rather than proportional to roster size.
+// Three-card packs avoid repeated players and, where possible, repeated nations.
+function drawPackPlayer(tier,already=[]){
+ const pools={
+  free:[[0,79,65],[80,85,30],[86,99,5]],
+  standard:[[0,79,45],[80,85,43],[86,90,11],[91,99,1]],
+  gold:[[0,79,10],[80,85,40],[86,90,40],[91,99,10]]
+ };
+ let bands=pools[tier],r=Math.random()*100,band=bands[bands.length-1];
+ for(let b of bands){r-=b[2];if(r<0){band=b;break}}
+ let pool=PLAYERS.filter(p=>p.rating>=band[0]&&p.rating<=band[1]);
+ if(!pool.length)pool=PLAYERS.filter(p=>p.rating<=85);
+ if(!pool.length)pool=PLAYERS;
+ const usedIds=new Set(already.map(p=>p.id)),usedNations=new Set(already.map(playerNation));
+ let eligible=pool.filter(p=>!usedIds.has(p.id)&&!usedNations.has(playerNation(p)));
+ if(!eligible.length)eligible=pool.filter(p=>!usedIds.has(p.id));
+ if(!eligible.length)eligible=pool;
+ // Nation-first selection means a large Swiss roster does not dominate every pack.
+ const nations=[...new Set(eligible.map(playerNation))];
+ const nation=nations[Math.floor(Math.random()*nations.length)];
+ const candidates=eligible.filter(p=>playerNation(p)===nation);
+ // Prefer new cards slightly without eliminating duplicate upgrades.
+ const weights=candidates.map(p=>(state.cards[p.id]||0)>0?1:1.6);
+ let pick=Math.random()*weights.reduce((a,b)=>a+b,0);
+ for(let i=0;i<candidates.length;i++){pick-=weights[i];if(pick<=0)return candidates[i]}
+ return candidates[candidates.length-1];
+}
+function openPurchasedPack(gold){
+ let key=gold?"goldPacks":"standardPacks";
+ if(!(state[key]>0))return;
+ state[key]--;
+ let picks=[];
+ for(let i=0;i<3;i++){
+  let p=drawPackPlayer(gold?"gold":"standard",picks);
+  picks.push(p);collectPlayer(p);
+ }
+ save();renderAlbum();renderHome();
+ showPackReveal(gold?"🌟 GOLD-PACK":"🎁 STANDARD-PACK",picks);
+}
+$("openStandardPack").onclick=()=>openPurchasedPack(false);
+$("openGoldPack").onclick=()=>openPurchasedPack(true);
+$("openPack").onclick=()=>{if(!state.packs)return;state.packs--;let p=drawPackPlayer("free");collectPlayer(p);save();renderAlbum();renderHome();showPackReveal("🎁 GRATIS-PACK",[p])};
+function fits(p,pos){
+ if(p.pos===pos)return true;
+ const compat={
+  "TW":["TW"],"LV":["LV","IV"],"RV":["RV","IV"],"IV":["IV","LV","RV"],
+  "ZDM":["ZDM","ZM","IV"],"ZM":["ZM","ZDM","ZOM"],"ZOM":["ZOM","ZM","LF","RF"],
+  "LF":["LF","RF","ST","ZOM"],"RF":["RF","LF","ST","ZOM"],"ST":["ST","LF","RF"]
+ };
+ return (compat[pos]||[pos]).includes(p.pos)
+}
+function renderTeam(){
+ $("pitch").innerHTML="";
+ ROWS.forEach(row=>{
+  let r=document.createElement("div");r.className="row";
+  row.forEach(i=>{
+   let p=PLAYERS.find(x=>x.id===state.lineup[i]),b=document.createElement("button");
+   b.className="slot"+(p?" filled":"");
+   if(p){
+    b.innerHTML=`${PLAYER_PHOTOS[p.id]?`<img src="${PLAYER_PHOTOS[p.id]}" onerror="this.style.display='none'">`:`<span style="font-size:24px">👤</span>`}<span>${p.flag}</span><strong>${p.name}</strong><span>${FORM[i]}</span><div class="sr">${eff(p)}</div>`;
+   }else b.innerHTML=`<strong>${FORM[i]}</strong><span>+ SPIELER</span>`;
+   b.onclick=()=>choose(i);r.appendChild(b)
+  });$("pitch").appendChild(r)
+ });
+ let ps=state.lineup.map(id=>PLAYERS.find(p=>p.id===id)).filter(Boolean);
+ $("teamRating").textContent=ps.length?Math.round(ps.reduce((a,p)=>a+eff(p),0)/ps.length):"–";
+ if(selectedSlot<0)$("chooser").innerHTML=""
+}
+function choose(i){
+ selectedSlot=i;
+ $("chooseLabel").textContent=`Freigeschaltete Spieler für ${FORM[i]}`;
+ let box=$("chooser");box.innerHTML="";
+ let owned=PLAYERS.filter(p=>(state.cards[p.id]||0)>0)
+   .sort((a,b)=>(fits(b,FORM[i])?1:0)-(fits(a,FORM[i])?1:0)||eff(b)-eff(a));
+ if(!owned.length){
+  box.innerHTML='<div class="panel" style="grid-column:1/-1">Noch keine Spielerkarten freigeschaltet. Öffne zuerst ein Pack.</div>';return
+ }
+ owned.forEach(p=>{
+  let usedIndex=state.lineup.indexOf(p.id),used=usedIndex>=0&&usedIndex!==i,compatible=fits(p,FORM[i]);
+  let b=document.createElement("button");b.className="playerChoice"+(compatible?" best":"")+(used?" used":"");
+  let img=PLAYER_PHOTOS[p.id];
+  requestPhoto(p);
+  b.innerHTML=`<div class="choiceRating">${eff(p)}</div>${img?`<img src="${img}" alt="${p.name}" onerror="this.outerHTML='<div class=&quot;miniFallback&quot;>👤</div>'">`:`<div class="miniFallback">👤</div>`}<div class="choiceName">${p.flag} ${p.name}</div><div class="choiceMeta">${p.pos} • ${compatible?"✓ passt":"andere Position"}</div>${used?'<div class="usedTag">BEREITS AUFGESTELLT</div>':""}`;
+  b.disabled=used;
+  b.onclick=()=>{state.lineup[i]=p.id;save();renderTeam();choose(i)};
+  box.appendChild(b)
+ });
+ let c=document.createElement("button");c.className="choice clearSlot";c.innerHTML="<b>❌ POSITION LEEREN</b>";c.onclick=()=>{state.lineup[i]=null;save();renderTeam();choose(i)};box.appendChild(c)
+}
+function renderJourney(){$("worlds").innerHTML="";WORLDS.forEach((w,i)=>{let unlocked=state.correct>=w[1]&&state.wins>=w[2]&&Object.keys(state.cards).length>=w[3],d=document.createElement("div");d.className="world"+(unlocked?"":" locked");d.innerHTML=`<b>${unlocked?"🔓":"🔒"} ${w[0]}</b><div class="muted">Benötigt: ${w[1]} richtige Quizfragen • ${w[2]} Siege • ${w[3]} Karten</div>`;$("worlds").appendChild(d)})}
+function teamPower(){let p=state.lineup.map(id=>PLAYERS.find(x=>x.id===id)).filter(Boolean);return p.length?Math.round(p.reduce((a,x)=>a+eff(x),0)/p.length):70}
+function renderCareer(){$("careerInfo").innerHTML=`<div class="stats"><span class="pill">🏆 Siege ${state.wins}</span><span class="pill">⚡ Team ${teamPower()}</span></div><p class="muted">Stelle zuerst dein bestes Team zusammen. Je stärker deine Mannschaft, desto besser die Siegchance.</p>`;$("matchResult").innerHTML=""}
+$("playMatch").onclick=()=>{let opp=72+Math.min(20,state.wins*2),mine=teamPower(),chance=Math.max(.25,Math.min(.8,.5+(mine-opp)/50)),win=Math.random()<chance;if(win){state.wins++;state.coins+=50;addXP(25);addPackPoints(30,"Karriere-Sieg");$("matchResult").innerHTML=`<h2>🎉 SIEG!</h2><p>+50 Münzen • +25 XP${state.wins%2===0?" • 🎁 Pack erspielt!":""}</p>`}else{$("matchResult").innerHTML="<h2>Knapp verloren</h2><p>Verbessere deine Mannschaft und versuche es nochmals.</p>";addXP(5)}save();renderCareer()};
+
+// Compact, fictional 8-team tournament. The player's team plays in Group A.
+function wcTeamName(){const n=state&&typeof state.wmTeamName==='string'?state.wmTeamName.trim():'';return n||'Mein Team'}
+function wcDisplayName(id){return id===0?'⭐ '+wcTeamName():WC_TEAMS[id]}
+const WC_TEAMS=["⭐ Mein Team","🇨🇭 Schweiz","🇫🇷 Frankreich","🇧🇷 Brasilien","🇦🇷 Argentinien","🇪🇸 Spanien","🏴 England","🇩🇪 Deutschland"];
+const WC_GROUPS=[[0,1,2,3],[4,5,6,7]];
+const WC_ROUNDS=[[[0,1],[2,3],[4,5],[6,7]],[[0,2],[1,3],[4,6],[5,7]],[[0,3],[1,2],[4,7],[5,6]]];
+const WC_STRENGTH=[0,79,88,87,87,88,87,85];
+function newWorldCup(){return {stage:"group",round:0,results:[],semi:[],final:null,champion:null,log:[],teamSnapshot:null,tactic:"balanced",lastMatch:null}}
+function wcState(){if(!state.worldCup||!state.worldCup.stage)state.worldCup=newWorldCup();return state.worldCup}
+function wcStrength(i){return i===0?(wcState().teamSnapshot||teamPower()):WC_STRENGTH[i]}
+// Player cards and correct positions contribute to the actual live-match chances.
+function wcLiveRating(p,slot){if(!p)return 55;return Math.max(35,eff(p)-(fits(p,FORM[slot])?0:14));}
+function wcLiveAttributes(){
+ const ratings=state.lineup.map((id,i)=>wcLiveRating(PLAYERS.find(p=>p.id===id),i));
+ const avg=indices=>indices.reduce((sum,i)=>sum+ratings[i],0)/indices.length;
+ return {keeper:ratings[0],defence:avg([1,2,3,4]),midfield:avg([5,6,7]),attack:avg([8,9,10]),overall:avg([0,1,2,3,4,5,6,7,8,9,10])};
+}
+function wcLiveScene(wc,opponent){
+ const a=wcLiveAttributes(),enemy=wcStrength(opponent),t=wc.tactic;
+ const attackBias=t==='attack'?0.09:t==='defend'?-0.09:0;
+ const possession=Math.max(.24,Math.min(.76,.50+(a.midfield-enemy)/120+attackBias));
+ const side=Math.random()<possession?0:1;
+ const attacking=side===0?a.attack:enemy;
+ const defending=side===0?enemy:a.defence*.72+a.keeper*.28;
+ const quality=Math.max(.03,Math.min(.40,.15+(attacking-defending)/140+(side===0&&t==='attack'?.035:0)));
+ const roll=Math.random(),kind=roll<quality?'goal':roll<quality+.25?'save':'miss';
+ // Attacking players take most shots; their card rating weights who gets the chance.
+ const candidates=[8,9,10,7,6,5];let scorerIndex=9;
+ if(side===0){const weights=candidates.map(i=>Math.max(1,(wcLiveRating(PLAYERS.find(p=>p.id===state.lineup[i]),i)-50)**1.3));let pick=Math.random()*weights.reduce((x,y)=>x+y,0);for(let j=0;j<candidates.length;j++){pick-=weights[j];if(pick<=0){scorerIndex=candidates[j];break}}}
+ else scorerIndex=candidates[Math.floor(Math.random()*3)];
+ return {side,kind,scorerIndex,text:kind==='goal'?'Der Ball ist im Netz!':kind==='save'?'Der Torhüter hält den Schuss!':'Der Schuss geht knapp am Tor vorbei!'};
+}
+function wcTacticBonus(){let t=wcState().tactic;return t==="attack"?3:t==="defend"?2:0}
+function wcScore(a,b){let live=wcState().live;if(live&&live.minute>=90&&((live.a===a&&live.b===b)||(live.a===b&&live.b===a))){return live.a===a?[live.sa,live.sb]:[live.sb,live.sa]}let diff=wcStrength(a)-wcStrength(b)+(a===0?wcTacticBonus():0)-(b===0?wcTacticBonus():0);let expectedA=Math.max(.3,Math.min(2.6,1.35+diff/28));let expectedB=Math.max(.3,Math.min(2.6,1.35-diff/28));let score=(v)=>{let n=0;for(let k=0;k<4;k++)if(Math.random()<v/4)n++;return n};return [score(expectedA),score(expectedB)]}
+function wcTable(group){let rows=group.map(id=>({id,sp:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}));for(let r of wcState().results){let a=rows.find(x=>x.id===r.a),b=rows.find(x=>x.id===r.b);if(!a||!b)continue;a.sp++;b.sp++;a.gf+=r.sa;a.ga+=r.sb;b.gf+=r.sb;b.ga+=r.sa;if(r.sa>r.sb){a.w++;b.l++;a.pts+=3}else if(r.sa<r.sb){b.w++;a.l++;b.pts+=3}else{a.d++;b.d++;a.pts++;b.pts++}}return rows.sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.id-b.id)}
+function wcWinner(r){if(r.sa!==r.sb)return r.sa>r.sb?r.a:r.b;return r.penalty}
+function wcPlayOne(){let wc=wcState();if(wc.stage==="done")return;
+if(!wc.live){startWcLive();return}
+if(wc.live.minute<90){return}
+if(wc.stage==="group"){
+ if(wc.round===0){let valid=state.lineup.filter(id=>id&&PLAYERS.some(p=>p.id===id&&(state.cards[id]||0)>0));if(valid.length<11){showModal("TEAM NOCH NICHT VOLLSTÄNDIG ⚽","Stelle zuerst elf gesammelte Spieler unter «Meine Mannschaft» auf.");return}wc.teamSnapshot=teamPower()}
+ for(let [a,b] of WC_ROUNDS[wc.round]){let [sa,sb]=wcScore(a,b);let m={a,b,sa,sb};wc.results.push(m);if(a===0||b===0)wc.lastMatch=m}
+ wc.log.unshift("Gruppen-Spieltag "+(wc.round+1)+" abgeschlossen");wc.round++;
+ if(wc.round===3){let a=wcTable(WC_GROUPS[0]),b=wcTable(WC_GROUPS[1]);wc.semi=[{a:a[0].id,b:b[1].id},{a:b[0].id,b:a[1].id}];wc.stage="semi"}
+}else if(wc.stage==="semi"){
+ wc.semi=wc.semi.map(m=>{let [sa,sb]=wcScore(m.a,m.b),penalty=sa===sb?(Math.random()<.5?m.a:m.b):null;let r={...m,sa,sb,penalty};if(m.a===0||m.b===0)wc.lastMatch=r;return r});
+ wc.log.unshift("Halbfinals gespielt");wc.stage="final";
+}else if(wc.stage==="final"){
+ let a=wcWinner(wc.semi[0]),b=wcWinner(wc.semi[1]),[sa,sb]=wcScore(a,b),penalty=sa===sb?(Math.random()<.5?a:b):null;
+ wc.final={a,b,sa,sb,penalty};if(a===0||b===0)wc.lastMatch=wc.final;wc.champion=wcWinner(wc.final);wc.stage="done";
+ if(wc.champion===0){state.coins+=600;addXP(120);addPackPoints(100,"WM-Sieg");wc.log.unshift("🏆 WELTMEISTER! +600 Münzen, +120 XP und Pack-Punkte!")}else{state.coins+=100;addXP(25);wc.log.unshift("🏆 Weltmeister: "+wcDisplayName(wc.champion)+" • +100 Münzen fürs Mitmachen")}
+}wc.live=null;save();renderHome();renderWorldCup()}
+function wcMatch(m){if(m.sa===undefined)return wcDisplayName(m.a)+" – "+wcDisplayName(m.b);return wcDisplayName(m.a)+" "+m.sa+" : "+m.sb+" "+wcDisplayName(m.b)+(m.penalty!==undefined&&m.penalty!==null?" (Penaltys: "+wcDisplayName(m.penalty)+")":"")}
+function renderWorldCup(){let wc=wcState(),names={group:"Gruppenphase",semi:"Halbfinal",final:"Finale",done:"Turnier beendet"};$("wcInfo").innerHTML=`<div class="stats"><span class="pill">🏆 ${names[wc.stage]}</span><span class="pill">⚡ Teamstärke ${wc.teamSnapshot||teamPower()}</span></div><div class="wcNameEditor"><label for="wcTeamNameInput">👕 Name deiner Mannschaft</label><div class="wcNameRow"><input id="wcTeamNameInput" type="text" maxlength="24" placeholder="z. B. FC Champions" autocomplete="off"><button class="btn gold" id="wcSaveTeamName">Speichern</button></div><small id="wcNameMessage">Der Name wird im Spielstand gespeichert und im Match sowie in der Tabelle angezeigt.</small></div>`;
+$("wcTeamNameInput").value=state.wmTeamName||"";
+$("wcSaveTeamName").onclick=()=>{const name=$("wcTeamNameInput").value.trim().replace(/\s+/g," ");if(name.length>24){$("wcNameMessage").textContent="Maximal 24 Zeichen.";return}state.wmTeamName=name;save();renderWorldCup()};
+let lineup=state.lineup.map(id=>PLAYERS.find(p=>p.id===id)).filter(Boolean);
+$("wcLineup").innerHTML=`<div class="wcGroup"><h3>👕 ${wcTeamName()} · Startelf 4-3-3</h3><div class="wcSquad">${lineup.map(p=>`<div class="wcSquadCard"><strong>${eff(p)}</strong><span>${p.flag||"⚽"}</span><small>${p.name.split(" ").slice(-1)[0]}</small></div>`).join("")||"Noch keine Spieler aufgestellt"}</div><button class="btn dark wide" id="wcEditTeam">✏️ Aufstellung bearbeiten</button></div>`;
+$("wcEditTeam").onclick=()=>{document.querySelector('[data-go="team"]').click()};
+$("wcLive").innerHTML=`<div class="wcGroup"><h3>🎮 Spieltaktik</h3><p class="muted">Wähle deine Taktik vor dem nächsten Spiel. Die Teamstärke beeinflusst das Ergebnis. Während des Live-Spiels kannst du die Taktik ändern und wechseln.</p><div class="wcTactics">${[["defend","🛡️ Defensiv"],["balanced","⚖️ Ausgewogen"],["attack","⚡ Offensiv"]].map(([id,label])=>`<button class="btn ${wc.tactic===id?"gold":"dark"}" data-wctactic="${id}">${label}</button>`).join("")}</div>${wc.lastMatch?`<div class="wcResult"><small>LETZTES SPIEL</small><h2>${wcMatch(wc.lastMatch)}</h2><p>Spieltag abgeschlossen · Ergebnis simuliert</p></div>`:""}</div>`;
+renderWcLivePitch();
+$("wcLive").querySelectorAll("[data-wctactic]").forEach(b=>b.onclick=()=>{wc.tactic=b.dataset.wctactic;save();renderWorldCup()});
+$("wcGroups").innerHTML=WC_GROUPS.map((g,i)=>`<div class="wcGroup"><h3>Gruppe ${i===0?"A":"B"}</h3><div class="wcTable"><b>Team</b><b>Sp</b><b>TD</b><b>Pt</b>${wcTable(g).map((t,j)=>`<span>${j<2&&wc.round===3?"✅ ":""}${wcDisplayName(t.id)}</span><span>${t.sp}</span><span>${t.gf-t.ga}</span><span>${t.pts}</span>`).join("")}</div></div>`).join("");
+let played=wc.results.map(wcMatch);let semi=wc.semi.map(wcMatch);let fin=wc.final?[wcMatch(wc.final)]:[];
+$("wcFixtures").innerHTML=`<h3>⚽ Spielplan</h3><div class="wcMatches">${played.map(x=>`<div>${x}</div>`).join("")||"Die Gruppenphase wartet auf den Anpfiff."}</div>${wc.semi.length?`<h3>🥈 Halbfinale</h3><div class="wcMatches">${semi.map(x=>`<div>${x}</div>`).join("")}</div>`:""}${wc.final?`<h3>🏆 Finale</h3><div class="wcMatches"><div>${fin[0]}</div></div>`:""}${wc.champion!==null?`<h2 style="text-align:center;color:#eac75d">🏆 ${wcDisplayName(wc.champion)} ist Weltmeister!</h2>`:""}${wc.log.length?`<p class="muted">${wc.log[0]}</p>`:""}`;
+$("wcPlay").style.display=wc.stage==="done"?"none":"block";$("wcPlay").textContent=wc.live?(wc.live.minute>=90?"🏁 Spiel beenden & Tabelle aktualisieren":"🎥 Live-Match läuft"):wc.stage==="group"?"⚽ Gruppenspieltag "+(wc.round+1)+" spielen":wc.stage==="semi"?"⚽ Halbfinale spielen":"🏆 Finale spielen";
+$("wcPlay").disabled=!!(wc.live&&wc.live.minute<90);$("wcPlay").onclick=wcPlayOne;}
+function wcNextOpponent(){let wc=wcState();if(wc.stage==="group"){let m=WC_ROUNDS[wc.round].find(pair=>pair.includes(0));return m?m.find(i=>i!==0):null}if(wc.stage==="semi"){let m=wc.semi.find(x=>x.a===0||x.b===0);return m?(m.a===0?m.b:m.a):null}if(wc.stage==="final"){let a=wcWinner(wc.semi[0]),b=wcWinner(wc.semi[1]);return a===0?b:b===0?a:null}return null}
+function startWcLive(){wcLivePaused=false;let wc=wcState();let opp=wcNextOpponent();if(opp===null){wc.live={a:-1,b:-1,minute:90,sa:0,sb:0,events:[],subs:[]};wcPlayOne();return}
+if(wc.stage==="group"&&wc.round===0){let valid=state.lineup.filter(id=>id&&PLAYERS.some(p=>p.id===id&&(state.cards[id]||0)>0));if(valid.length<11){showModal("TEAM NOCH NICHT VOLLSTÄNDIG ⚽","Stelle zuerst elf gesammelte Spieler unter «Meine Mannschaft» auf.");return}}
+const scenes=Array.from({length:9},()=>wcLiveScene(wc,opp));
+wc.live={a:0,b:opp,minute:0,sa:0,sb:0,events:["0′ ⚽ Anpfiff!"],subs:[],momentum:0,elapsedMs:0,lastTick:Date.now(),scenes};save();renderWorldCup()}
+function advanceWcLive(){let wc=wcState(),l=wc.live;if(!l||l.minute>=90)return;let t=wc.tactic;let my=wcStrength(0)+l.momentum,other=wcStrength(l.b);let attack=t==="attack"?0.22:t==="defend"?-0.13:0;let mine=Math.max(.06,Math.min(.52,.19+(my-other)/160+attack));let theirs=Math.max(.05,Math.min(.46,.18+(other-my)/170+(t==="attack"?.12:t==="defend"?-.08:0)));let minute=Math.min(90,l.minute+10);let scorer=Math.random();if(scorer<mine){l.sa++;let players=state.lineup.map(id=>PLAYERS.find(p=>p.id===id)).filter(p=>p&&p.pos!=="TW");let name=players.length?players[Math.floor(Math.random()*players.length)].name:"Mein Team";l.events.unshift(minute+"′ ⚽ TOR! "+name+" ("+l.sa+":"+l.sb+")")}else if(scorer<mine+theirs){l.sb++;l.events.unshift(minute+"′ ⚽ Tor für "+wcDisplayName(l.b)+" ("+l.sa+":"+l.sb+")")}else{l.events.unshift(minute+"′ "+["Spannender Zweikampf im Mittelfeld","Gute Parade des Torhüters!","Knapp am Tor vorbei!","Ein gefährlicher Angriff!"][Math.floor(Math.random()*4)])}l.minute=minute;save();renderWorldCup()}
+function wcSubstitute(){let wc=wcState(),l=wc.live;if(!l||l.minute>=90)return;let used=new Set(state.lineup.concat(l.subs.map(sub=>sub.in)));let bench=PLAYERS.filter(p=>(state.cards[p.id]||0)>0&&!used.has(p.id));if(!bench.length){showModal("KEINE ERSATZSPIELER","Sammle weitere Karten, um Spieler einwechseln zu können.");return}let choices=bench.sort((a,b)=>eff(b)-eff(a)).slice(0,10);let panel=document.getElementById("wcSubPicker");panel.innerHTML='<strong>🔄 Ersatzspieler auswählen</strong><p class="muted">Ein Wechsel gibt deiner Mannschaft neuen Schwung.</p>'+choices.map(p=>`<button class="btn dark" data-sub="${p.id}">${p.flag} ${p.name} · ${eff(p)}</button>`).join('')+'<button class="btn dark" id="wcCancelSub">Abbrechen</button>';panel.style.display="grid";panel.querySelector('#wcCancelSub').onclick=()=>panel.style.display='none';panel.querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>{let p=PLAYERS.find(x=>x.id===b.dataset.sub);if(l.subs.length>=3){showModal("WECHSELLIMIT","Maximal drei Wechsel pro Spiel.");return}let active=wcMatchSquads(l)[0];let slot=active.findIndex(x=>x&&x.pos===p.pos);if(slot<0)slot=active.findIndex(x=>x&&x.pos!=="TW");if(slot<0)return;let outgoing=active[slot];l.subs.push({in:p.id,out:outgoing.id});for(let n=Math.floor((l.elapsedMs||0)/15000)+1;n<9;n++)l.scenes[n]=wcLiveScene(wc,l.b);l.momentum=Math.min(6,l.momentum+2);l.events.unshift(l.minute+"′ 🔄 "+p.name+" für "+outgoing.name);panel.style.display='none';save();renderWorldCup()})}
+function renderWcLivePitch(){
+ let wc=wcState(),l=wc.live,box=$("wcLivePitch");if(!l||l.a<0){box.innerHTML="";return}
+ let players=state.lineup.map(id=>PLAYERS.find(p=>p.id===id)).filter(Boolean);
+ box.innerHTML=`<div class="wcLiveBox"><div class="wcScoreboard"><strong class="wcTeamLabel wcTeamHome">🔴 ${wcTeamName()} (ROT)</strong><b id="wcLiveScore">${l.sa} : ${l.sb}</b><strong class="wcTeamLabel wcTeamAway">🟡 ${wcDisplayName(l.b)}</strong></div><div class="wcClock" id="wcLiveClock">⏱ ${l.minute}′ / 90′</div><div class="wcField wcVideoField" id="wcVideoField"><div class="wcCenter"></div><div class="wcPenalty left"></div><div class="wcPenalty right"></div><div class="wcGoal left"></div><div class="wcGoal right"></div><div class="wcPitchSide wcPitchHome">🔴 ${wcTeamName()}</div><div class="wcPitchSide wcPitchAway">🟡 ${wcDisplayName(l.b)}</div><div id="wcVideoActors"></div><span class="wcBall" id="wcVideoBall">⚽</span><div id="wcSceneBanner" class="wcSceneBanner">⚽ ANPFIFF!</div></div><div class="wcPlayerSpotlight" id="wcPlayerSpotlight">⚽ Ballführender Spieler</div><div class="wcPossession" id="wcPossession">⚽ BALLBESITZ: 🔴 ${wcTeamName()}</div><div class="wcLiveCaption" id="wcLiveCaption">🎙️ Das Spiel beginnt – beide Mannschaften suchen den Weg nach vorne.</div><button class="btn dark wide" id="wcPauseLive">⏸ Pause</button><div class="wcLiveControls"><button class="btn ${wc.tactic==='defend'?'gold':'dark'}" data-live-tactic="defend">🛡️ Defensiv</button><button class="btn ${wc.tactic==='balanced'?'gold':'dark'}" data-live-tactic="balanced">⚖️ Normal</button><button class="btn ${wc.tactic==='attack'?'gold':'dark'}" data-live-tactic="attack">⚡ Offensiv</button></div><button class="btn dark wide" id="wcMakeSub" ${l.minute>=90||l.subs.length>=3?'disabled':''}>🔄 Auswechseln (${l.subs.length}/3)</button><div id="wcSubPicker" class="wcSubPicker" style="display:none"></div><div class="wcCommentary">${l.events.slice(0,5).map(e=>`<div>${e}</div>`).join('')}</div><p class="muted">⭐ Kartenstärke, Positionen und Taktik beeinflussen Ballbesitz und Torchancen. 🎥 90 Spielminuten in rund 2:15 Minuten Echtzeit. Der Live-Ticker und die Szenen laufen ohne Unterbrechung.</p></div>`;
+ box.querySelectorAll('[data-live-tactic]').forEach(b=>b.onclick=()=>{wc.tactic=b.dataset.liveTactic;const live=wc.live;if(live&&live.scenes){for(let n=Math.floor((live.elapsedMs||0)/15000)+1;n<9;n++)live.scenes[n]=wcLiveScene(wc,live.b)}save();renderWorldCup()});
+ box.querySelector('#wcMakeSub').onclick=wcSubstitute;
+ let pause=box.querySelector('#wcPauseLive');pause.textContent=wcLivePaused?'▶️ Weiter':'⏸ Pause';pause.onclick=()=>{wcLivePaused=!wcLivePaused;if(!wcLivePaused&&state.worldCup.live)state.worldCup.live.lastTick=Date.now();pause.textContent=wcLivePaused?'▶️ Weiter':'⏸ Pause'};
+ wcVideoInit();
+}
+let wcVideoPhase=0,wcVideoActors=[],wcVideoKey='';
+function wcMatchSquads(l){
+ const current=state.lineup.slice();
+ for(const sub of (l.subs||[])){const idx=current.indexOf(sub.out);if(idx>=0)current[idx]=sub.in;}
+ const own=current.map(id=>PLAYERS.find(p=>p.id===id)||null);
+ const flag=(wcDisplayName(l.b)||'').split(' ')[0];
+ const pool=PLAYERS.filter(p=>p.flag===flag);
+ const others=Array.from({length:11},(_,i)=>pool[i]||null);
+ return [own,others];
+}
+function wcMatchPlayer(l,side,index){
+ const squads=wcMatchSquads(l),p=squads[side]&&squads[side][index];
+ return p?p.name:(side===0?'Spieler '+(index+1):'Gegner Nr. '+(index+1));
+}
+function wcShortName(name){const bits=name.trim().split(/\s+/);return bits.length>1?bits[bits.length-1]:name;}
+function wcVideoInit(){
+ let field=document.getElementById('wcVideoActors');if(!field)return;
+ wcVideoActors=[];
+ for(let side=0;side<2;side++)for(let i=0;i<11;i++){
+  let el=document.createElement('span');el.className='wcDot '+(side===0?'home':'away')+(i===0?' keeper':'');el.style.backgroundColor=side===0?'#e93e4a':'#ffd44d';el.style.color=side===0?'#ffffff':'#202b30';el.dataset.team=side===0?'mein-team':'gegner';el.textContent=String(i+1);el.title=wcMatchPlayer(state.worldCup.live,side,i);field.appendChild(el);wcVideoActors.push(el)
+ }
+ wcVideoKey=String((state.worldCup&&state.worldCup.live&&state.worldCup.live.minute)||0);
+ wcVideoFrame();
+}
+function wcVideoFrame(){
+ const wc=state&&state.worldCup,l=wc&&wc.live;
+ const field=document.getElementById('wcVideoActors');
+ if(!l||!field||wcVideoActors.length!==22)return;
+ const ball=document.getElementById('wcVideoBall'),caption=document.getElementById('wcLiveCaption'),banner=document.getElementById('wcSceneBanner'),clock=document.getElementById('wcLiveClock');
+ if(!ball||!caption||!banner||!clock)return;
+ const elapsed=Math.max(0,Math.min(135000,l.elapsedMs||0)),minute=Math.min(90,Math.floor(elapsed/1500));
+ clock.textContent='⏱ '+minute+'′ / 90′  ·  '+Math.ceil((135000-elapsed)/1000)+'s';
+ const block=Math.min(8,Math.floor(elapsed/15000)),fraction=Math.min(.99999,(elapsed%15000)/15000);
+ const scene=l.scenes&&l.scenes[block]||{side:block%2,kind:'miss',text:'Der Ball geht knapp vorbei!'};
+ const initialHome=scene.side===0,turnover=scene.kind!=='goal';
+ // Scripted possession: several actual passes, a defender challenge, and a shot.
+ // A turnover changes the ball carrier and the direction of play.
+ const pts=turnover?[[13,48],[24,35],[38,55],[51,43],[55,47],[49,60],[36,39],[25,48],[16,52]]:
+ [[13,48],[25,35],[38,55],[51,43],[56,47],[65,37],[77,52],[89,49],[97,50]];
+ const f=fraction*(pts.length-1),k=Math.min(pts.length-2,Math.floor(f)),t=f-k,e=t*t*(3-2*t);
+ const rawX=pts[k][0]+(pts[k+1][0]-pts[k][0])*e;
+ const rawY=pts[k][1]+(pts[k+1][1]-pts[k][1])*e;
+ const bx=initialHome?rawX:100-rawX,by=rawY;
+ ball.style.left=bx+'%';ball.style.top=by+'%';ball.style.transform='translate(-50%,-50%) rotate('+Math.floor(elapsed/11)+'deg)';
+ const possHome=turnover&&fraction>=.5?!initialHome:initialHome;
+ const poss=document.getElementById('wcPossession');if(poss){poss.textContent='⚽ BALLBESITZ: '+(possHome?'🔴 ${wcTeamName()}':'🟡 '+wcDisplayName(l.b));poss.className='wcPossession '+(possHome?'isHome':'isAway');}
+ const attackTeam=possHome?0:1,defTeam=1-attackTeam;
+ const owner=fraction>.82&&scene.kind==='goal'?(scene.scorerIndex??9):[5,6,7,8,9,10,7,9][Math.min(7,Math.floor(fraction*8))];
+ const presser=2+((block*5+Math.floor(fraction*5))%9);
+ const challenge=Math.abs(fraction-.5)<.12;
+ const spotlight=document.getElementById('wcPlayerSpotlight');
+ const currentName=wcMatchPlayer(l,attackTeam,owner);
+ const defenderName=wcMatchPlayer(l,defTeam,presser);
+ if(spotlight){spotlight.textContent=(possHome?'🔴 ':'🟡 ')+currentName+'  ⚽'+(challenge?'  ⚔️ '+defenderName:'');spotlight.className='wcPlayerSpotlight '+(possHome?'home':'away');}
+
+ wcVideoActors.forEach((el,i)=>{
+  const team=Math.floor(i/11),j=i%11,ours=team===0,keeper=j===0;
+  const lane=(j-1+5)%5,depth=Math.floor(Math.max(0,j-1)/5);
+  const baseX=keeper?(ours?5:95):(ours?18+depth*22:82-depth*22);
+  const baseY=keeper?50:16+lane*17;
+  // Players have different running rhythms, while team shape follows play.
+  const wobbleX=Math.sin(elapsed/730+i*2.7)*2.5;
+  const wobbleY=Math.sin(elapsed/1030+i*1.9)*3.1;
+  const advancing=team===attackTeam?(ours?7:-7):(ours?-4:4);
+  let x=baseX*.78+bx*.22+advancing+wobbleX;
+  let y=baseY*.83+by*.17+wobbleY;
+  if(keeper){
+   const danger=ours?bx<25:bx>75;
+   x=ours?(danger?8:4.5):(danger?92:95.5);
+   y=Math.max(32,Math.min(68,50+(by-50)*(danger?.65:.32)));
+  }else if(team===attackTeam&&j===owner){
+   x=bx+(ours?-2.6:2.6);y=by+2;
+  }else if(team===defTeam&&j===presser){
+   // A defender sprints at the carrier; tackle visibly closes the gap.
+   const pressure=challenge?.94:.68;
+   x=x*(1-pressure)+(bx+(ours?-2.7:2.7))*pressure;
+   y=y*(1-pressure)+(by-2.8)*pressure;
+  }else if(team===defTeam&&j===((presser+3)%9+2)){
+   // Covering defender blocks the passing lane.
+   x=x*.5+(bx+(ours?-10:10))*.5;
+   y=y*.6+(by+11)*.4;
+  }else if(team===attackTeam&&j===((owner+3)%9+2)){
+   // Off-ball runner creates a passing option.
+   x=x*.5+(bx+(ours?13:-13))*.5;
+   y=y*.55+(by-15)*.45;
+  }
+  el.style.left=Math.max(4,Math.min(96,x))+'%';
+  el.style.top=Math.max(6,Math.min(94,y))+'%';
+  el.style.transform='translate(-50%,-50%)';
+  el.style.zIndex=keeper?'4':team===attackTeam&&j===owner?'9':'5';
+  el.classList.toggle('wcBallCarrier',!keeper&&team===attackTeam&&j===owner);
+  el.classList.toggle('wcPressing',!keeper&&team===defTeam&&j===presser);
+ });
+ const attacker=initialHome?'🔴 ${wcTeamName()}':'🟡 '+wcDisplayName(l.b);
+ const defender=initialHome?'🟡 '+wcDisplayName(l.b):'🔴 ${wcTeamName()}';
+ let action,message;
+ if(fraction<.27){action='PASS-SPIEL';message=attacker+': '+currentName+' kombiniert mit kurzen Pässen.'}
+ else if(fraction<.44){action='PRESSING';message=defender+': '+defenderName+' stellt die Passwege zu.'}
+ else if(fraction<.55){action='⚔️ ZWEIKAMPF';message=defender+': '+defenderName+' attackiert '+currentName+' – Zweikampf!' }
+ else if(turnover&&fraction<.83){action='BALLEROBERUNG';message=defender+': '+currentName+' startet den Gegenangriff!' }
+ else if(fraction<.83){action='ANGRIFF';message=attacker+': '+currentName+' behauptet den Ball und spielt in die Spitze!' }
+ else if(fraction<.94){action=turnover?'KONTER':'TORSCHUSS';message=turnover?defender+' schaltet schnell um!':attacker+': '+currentName+' schiesst aufs Tor!'}
+ else{action=scene.kind==='goal'?'⚽ TOR!':scene.kind==='save'?'🧤 PARADE!':'↗️ VORBEI!';message=attacker+': '+wcMatchPlayer(l,scene.side,scene.scorerIndex??owner)+' – '+(scene.text||action)}
+ banner.textContent=minute>=90?'🏁 ABPFIFF':action;
+ caption.textContent=minute>=90?'🏁 Abpfiff! Spiel beenden und Tabelle aktualisieren.':message;
+}
+let wcLivePaused=false;
+setInterval(()=>{if(!wcLivePaused)wcVideoFrame()},80);
+// Continuous 135-second match: one clock owns time, score and scene updates.
+let wcMatchLastUi=0;
+setInterval(()=>{
+ if(!state||!state.worldCup||!state.worldCup.live)return;
+ const l=state.worldCup.live;
+ if(l.a<0||l.minute>=90||wcLivePaused)return;
+ const screen=document.getElementById('worldcup');
+ if(!screen||!screen.classList.contains('on')){l.lastTick=Date.now();return}
+ if(!Number.isFinite(l.elapsedMs))l.elapsedMs=Math.max(0,(l.minute||0)*1500);const now=Date.now(),delta=Math.max(0,Math.min(2500,now-(l.lastTick||now)));
+ l.lastTick=now;l.elapsedMs=Math.min(135000,(l.elapsedMs||0)+delta);
+ if(!Array.isArray(l.scenes)||l.scenes.length!==9){
+   l.scenes=Array.from({length:9},(_,i)=>({side:i%2,kind:'miss',text:'Der Ball geht knapp vorbei!'}));
+ }
+ const minute=Math.min(90,Math.floor(l.elapsedMs/1500));
+ // Score updates only when the simulated minute crosses a 10-minute boundary.
+ while(l.minute+10<=minute&&l.minute<90){
+   const next=Math.min(90,l.minute+10),scene=l.scenes&&l.scenes[(next/10)-1];
+   if(scene&&scene.kind==='goal'){
+     if(scene.side===0){l.sa++;l.events.unshift(next+"′ ⚽ TOR! "+wcMatchPlayer(l,0,scene.scorerIndex??9)+" ("+l.sa+":"+l.sb+")");}
+     else{l.sb++;l.events.unshift(next+"′ ⚽ TOR! "+wcMatchPlayer(l,1,scene.scorerIndex??9)+" · "+wcDisplayName(l.b)+" ("+l.sa+":"+l.sb+")");}
+   }else if(scene){l.events.unshift(next+"′ "+(scene.side===0?"Dein Team":wcDisplayName(l.b))+": "+scene.text);}
+   l.minute=next;
+   const score=document.getElementById("wcLiveScore"),events=document.querySelector("#wcLivePitch .wcCommentary");
+   if(score)score.textContent=l.sa+" : "+l.sb;
+   if(events)events.innerHTML=l.events.slice(0,5).map(e=>"<div>"+e+"</div>").join("");
+   save();
+ }
+ if(l.elapsedMs>=135000){l.minute=90;save();
+  const caption=document.getElementById("wcLiveCaption"),banner=document.getElementById("wcSceneBanner");
+  if(caption)caption.textContent="🏁 Abpfiff! 90 Minuten gespielt. Jetzt das Ergebnis übernehmen.";
+  if(banner)banner.textContent="🏁 ABPFIFF";
+  const btn=document.getElementById("wcPlay");
+  if(btn){btn.textContent="🏁 Spiel beenden & Tabelle aktualisieren";btn.disabled=false;}
+ }
+},100);
+let wcResetArmed=false;
+$("wcReset").onclick=()=>{
+ if(!wcResetArmed){
+   wcResetArmed=true;
+   $("wcReset").textContent="⚠️ Bestätigen: Neue WM starten";
+   $("wcReset").classList.remove("dark");$("wcReset").classList.add("gold");
+   return;
+ }
+ state.worldCup=newWorldCup();wcLivePaused=false;wcResetArmed=false;
+ save();renderWorldCup();renderHome();
+ $("wcReset").textContent="↻ Neue WM starten";
+ $("wcReset").classList.remove("gold");$("wcReset").classList.add("dark");
+};
+
+$("backupGo").onclick=()=>openPage("backup");
+$("backupExport").onclick=()=>{
+ if(!active||!state)return;
+ try{
+ const payload={format:"meine-fussballwelt-backup",version:1,exportedAt:new Date().toISOString(),profile:profile(),state:JSON.parse(JSON.stringify(state))};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="meine-fussballwelt-spielstand.json";document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+ $("backupStatus").textContent="Backup erstellt. Bitte die Datei an einem sicheren Ort speichern.";
+ }catch(e){$("backupStatus").textContent="Export fehlgeschlagen: "+e.message}
+};
+$("backupImport").onchange=async e=>{
+ const f=e.target.files&&e.target.files[0];if(!f||!active)return;
+ try{
+  if(f.size>3000000)throw Error("Datei ist zu gross.");
+  const data=JSON.parse(await f.text());
+  if(data.format!=="meine-fussballwelt-backup"||data.version!==1||!data.state||typeof data.state!=="object"||Array.isArray(data.state))throw Error("Keine gültige Fussballwelt-Sicherung.");
+  if(!data.state.cards||typeof data.state.cards!=="object"||!Array.isArray(data.state.lineup))throw Error("Spielstand unvollständig.");
+  if(!confirm("Aktuellen Spielstand dieses Profils durch die Sicherung ersetzen?"))return;
+  state=data.state;normalize();save();renderHome();$("backupStatus").textContent="Spielstand erfolgreich importiert.";
+ }catch(err){$("backupStatus").textContent="Import fehlgeschlagen: "+err.message}
+ e.target.value="";
+};
+renderUsers();renderAvatars();
+
+// Birth dates are curated known facts. No fabricated birthdays for players without a record.
+const PLAYER_BIRTHDATES={
+ mbappe:"1998-12-20",haaland:"2000-07-21",yamal:"2007-07-13",bellingham:"2003-06-29",vini:"2000-07-12",kane:"1993-07-28",salah:"1992-06-15",pedri:"2002-11-25",mendes:"2002-06-19",kobel:"1997-12-06",akanji:"1995-07-19",xhaka:"1992-09-27",embolo:"1997-02-14",messi:"1987-06-24",cr7:"1985-02-05",zidane:"1972-06-23",ronaldinho:"1980-03-21",lewandowski:"1988-08-21",olise:"2001-12-12",desire:"2005-06-03",dembele:"1997-05-15",neuer:"1986-03-27"
+};
+// Biographical facts are intentionally limited to well-established details.
+// Club labels refer to known career clubs, not necessarily the current club.
+const PLAYER_FACTS={
+ mbappe:{height:"1,78 m",foot:"Rechts",clubs:"AS Monaco, Paris SG, Real Madrid"},
+ haaland:{height:"1,94 m",foot:"Links",clubs:"Molde, Salzburg, Dortmund, Manchester City"},
+ yamal:{height:"1,80 m",foot:"Links",clubs:"FC Barcelona"},
+ bellingham:{height:"1,86 m",foot:"Rechts",clubs:"Birmingham City, Dortmund, Real Madrid"},
+ vini:{height:"1,76 m",foot:"Rechts",clubs:"Flamengo, Real Madrid"},
+ kane:{height:"1,88 m",foot:"Rechts",clubs:"Tottenham, Bayern München"},
+ salah:{height:"1,75 m",foot:"Links",clubs:"Basel, Chelsea, Roma, Liverpool"},
+ messi:{height:"1,70 m",foot:"Links",clubs:"FC Barcelona, Paris SG, Inter Miami"},
+ cr7:{height:"1,87 m",foot:"Rechts",clubs:"Sporting, Manchester United, Real Madrid, Juventus, Al-Nassr"},
+ xhaka:{height:"1,86 m",foot:"Links",clubs:"Basel, Gladbach, Arsenal, Leverkusen"},
+ kobel:{height:"1,95 m",foot:"Rechts",clubs:"Hoffenheim, Stuttgart, Dortmund"},
+ akanji:{height:"1,88 m",foot:"Rechts",clubs:"Winterthur, Basel, Dortmund, Manchester City"},
+ lewandowski:{height:"1,85 m",foot:"Rechts",clubs:"Dortmund, Bayern München, Barcelona"},
+ neuer:{height:"1,93 m",foot:"Rechts",clubs:"Schalke 04, Bayern München"},
+ vandijk:{height:"1,95 m",foot:"Rechts",clubs:"Groningen, Celtic, Southampton, Liverpool"},
+ pedri:{height:"1,74 m",foot:"Rechts",clubs:"Las Palmas, FC Barcelona"},
+ rodri:{height:"1,91 m",foot:"Rechts",clubs:"Villarreal, Atlético Madrid, Manchester City"},
+ mendes:{height:"1,80 m",foot:"Links",clubs:"Sporting CP, Paris SG"},
+ hakimi:{height:"1,81 m",foot:"Rechts",clubs:"Real Madrid, Dortmund, Inter, Paris SG"},
+ dembele:{height:"1,78 m",foot:"Beidfüssig",clubs:"Rennes, Dortmund, Barcelona, Paris SG"}
+};
+const POSITION_STYLES={
+ TW:["Reflexe","Stellungsspiel","Abwehr organisieren"],
+ IV:["Zweikämpfe","Kopfball","Stellungsspiel"],
+ LV:["Tempo","Flanken","Defensivarbeit"],RV:["Tempo","Flanken","Defensivarbeit"],
+ ZDM:["Balleroberung","Passspiel","Spielübersicht"],ZM:["Passspiel","Spielübersicht","Laufarbeit"],
+ ZOM:["Kreativität","Dribbling","Pässe"],LF:["Tempo","Dribbling","Abschluss"],
+ RF:["Tempo","Dribbling","Abschluss"],ST:["Abschluss","Positionierung","Torinstinkt"]
+};
+const POSITION_NAMES={TW:"Torhüter",IV:"Innenverteidiger",LV:"Linksverteidiger",RV:"Rechtsverteidiger",ZDM:"Defensives Mittelfeld",ZM:"Zentrales Mittelfeld",ZOM:"Offensives Mittelfeld",LF:"Linker Flügel",RF:"Rechter Flügel",ST:"Stürmer"};
+let currentFlipId=null,flipSide="front";
+function ageFromDate(iso){if(!iso)return null;let b=new Date(iso+"T12:00:00Z"),now=new Date();let n=now.getUTCFullYear()-b.getUTCFullYear();if(now.getUTCMonth()<b.getUTCMonth()||(now.getUTCMonth()===b.getUTCMonth()&&now.getUTCDate()<b.getUTCDate()))n--;return n}
+function openPlayerFlip(id){let p=PLAYERS.find(x=>x.id===id);if(!p||!(state.cards[id]>0))return;currentFlipId=id;flipSide="front";$("playerFlip").classList.add("open");document.body.classList.add("flipOpen");drawPlayerFlip();$("flipClose").focus()}
+function closePlayerFlip(){$("playerFlip").classList.remove("open");document.body.classList.remove("flipOpen");currentFlipId=null}
+function drawPlayerFlip(){let p=PLAYERS.find(x=>x.id===currentFlipId);if(!p)return;let dob=PLAYER_BIRTHDATES[p.id],age=ageFromDate(dob),count=state.cards[p.id]||0,facts=PLAYER_FACTS[p.id]||{},styles=POSITION_STYLES[p.pos]||["Teamwork"];$("flipHeading").textContent=flipSide==="front"?"✨ VORDERSEITE":"📋 RÜCKSEITE";
+ let front=`<div class="flipCard"><div class="rating">${eff(p)} <span style="font-size:17px">${p.pos}</span></div>${photoHTML(p)}<h2>${p.name}</h2><p>${p.flag} ${playerNation(p)} · ${POSITION_NAMES[p.pos]||p.pos}</p><p>⭐ ${cardLevel(p.id)===4?"💎 DIAMANT":cardLevel(p.id)+" / 4"} · ${count} Karten gesammelt</p><button class="flipAction" id="flipToggle">🔄 RÜCKSEITE ANSEHEN</button></div>`;
+ let back=`<div class="flipCard"><div style="font-size:11px;letter-spacing:2px;color:#e8d298">SPIELERPROFIL</div><h2>${p.name}</h2><div class="flipMeta"><div><small>Nationalität</small><b>${p.flag} ${playerNation(p)}</b></div><div><small>Alter</small><b>${age===null?"Noch nicht hinterlegt":age+" Jahre"}</b></div><div><small>Geburtsdatum</small><b>${dob?dob.split("-").reverse().join("."):"Noch nicht hinterlegt"}</b></div><div><small>Position</small><b>${POSITION_NAMES[p.pos]||p.pos} (${p.pos})</b></div><div><small>Grösse</small><b>${facts.height||"Noch offen"}</b></div><div><small>Starker Fuss</small><b>${facts.foot||"Noch offen"}</b></div><div><small>Grundstärke</small><b>${p.rating}</b></div><div><small>Aktuelle Stärke</small><b>${eff(p)} (+${eff(p)-p.rating})</b></div><div><small>Kartenstufe</small><b>${["","🥉 Bronze","🥈 Silber","🥇 Gold","💎 Diamant"][cardLevel(p.id)]}</b></div><div><small>Gesammelt</small><b>${count} ${count===1?"Karte":"Karten"}</b></div><div><small>Bewertungsquelle</small><b>${FC26_VERIFIED[p.id]!==undefined?"FC 26":"Spielwert"}</b></div><div><small>Nächstes Upgrade</small><b>${count>=10?"Maximalstufe":count+" / "+nextUpgrade(count)}</b></div></div><div class="careerFacts"><strong>🏟️ Bekannte Karrierestationen</strong><p>${facts.clubs||"Noch nicht hinterlegt"}</p><strong>⚡ Typische Aufgaben der Position</strong><p>${styles.join(" · ")}</p></div><p class="flipNote">Karrierestationen sind nicht zwingend der aktuelle Verein. Positionsmerkmale sind allgemeine Spielbeschreibungen, keine gemessenen Einzelwerte.</p><button class="flipAction" id="flipToggle">🔄 VORDERSEITE ANSEHEN</button></div>`;
+ $("flipContent").innerHTML=flipSide==="front"?front:back;$("flipToggle").onclick=()=>{flipSide=flipSide==="front"?"back":"front";drawPlayerFlip()};
+}
+$("flipClose").onclick=closePlayerFlip;
+$("playerFlip").addEventListener("click",e=>{if(e.target===$("playerFlip"))closePlayerFlip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&currentFlipId)closePlayerFlip()});
+</script>
+</body></html>
