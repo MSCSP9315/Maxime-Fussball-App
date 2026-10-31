@@ -197,6 +197,7 @@ body.flipOpen{overflow:hidden}
 const KEY_USERS="fw10_users",KEY_PREFIX="fw10_state_";
 const AVATARS=["⚽","🦁","🐯","🦊","🐺","🦅","🔥","⭐"];
 const PLAYERS=[
+["maxime_custom","Maxime","ST","99","🇨🇭","⭐ LEGENDÄR","Schweiz"],
 ["mbappe","Kylian Mbappé","ST","94","🇫🇷","WM-STAR",""],
 ["haaland","Erling Haaland","ST","94","🇳🇴","WM-STAR",""],
 ["yamal","Lamine Yamal","RF","92","🇪🇸","WM-STAR",""],
@@ -515,10 +516,12 @@ function guessWho(name,btn){
 }
 
 const PLAYER_PHOTOS=Object.create(null);
+PLAYER_PHOTOS.maxime_custom="./maxime-karte.jpg";
 const PHOTO_PENDING=new Set();
 const PHOTO_FAILED=new Set();
 const PHOTO_ALIASES={"olise":"Michael Olise","doue":"Désiré Doué","nuno":"Nuno Mendes","cr7":"Cristiano Ronaldo","vini":"Vinícius Júnior","messi":"Lionel Messi","ronaldo9":"Ronaldo (Brazilian footballer)","ronaldinho":"Ronaldinho","pele":"Pelé","maradona":"Diego Maradona","kobel":"Gregor Kobel"};
 function requestPhoto(p){
+ if(p.id==="maxime_custom"){PLAYER_PHOTOS[p.id]="./maxime-karte.jpg";return;}
  if(PLAYER_PHOTOS[p.id]||PHOTO_PENDING.has(p.id)||PHOTO_FAILED.has(p.id))return;
  PHOTO_PENDING.add(p.id);
  let title=PHOTO_ALIASES[p.id]||p.name;
@@ -1031,7 +1034,7 @@ let currentFlipId=null,flipSide="front";
 function ageFromDate(iso){if(!iso)return null;let b=new Date(iso+"T12:00:00Z"),now=new Date();let n=now.getUTCFullYear()-b.getUTCFullYear();if(now.getUTCMonth()<b.getUTCMonth()||(now.getUTCMonth()===b.getUTCMonth()&&now.getUTCDate()<b.getUTCDate()))n--;return n}
 function openPlayerFlip(id){let p=PLAYERS.find(x=>x.id===id);if(!p||!(state.cards[id]>0))return;currentFlipId=id;flipSide="front";$("playerFlip").classList.add("open");document.body.classList.add("flipOpen");drawPlayerFlip();$("flipClose").focus()}
 function closePlayerFlip(){$("playerFlip").classList.remove("open");document.body.classList.remove("flipOpen");currentFlipId=null}
-function drawPlayerFlip(){let p=PLAYERS.find(x=>x.id===currentFlipId);if(!p)return;let dob=PLAYER_BIRTHDATES[p.id],age=ageFromDate(dob),count=state.cards[p.id]||0,facts=PLAYER_FACTS[p.id]||{},styles=POSITION_STYLES[p.pos]||["Teamwork"];$("flipHeading").textContent=flipSide==="front"?"✨ VORDERSEITE":"📋 RÜCKSEITE";
+function drawPlayerFlip(){let p=PLAYERS.find(x=>x.id===currentFlipId);if(!p)return;let dob=PLAYER_BIRTHDATES[p.id],age=p.id==="maxime_custom"?9:ageFromDate(dob),count=state.cards[p.id]||0,facts=PLAYER_FACTS[p.id]||{},styles=POSITION_STYLES[p.pos]||["Teamwork"];$("flipHeading").textContent=flipSide==="front"?"✨ VORDERSEITE":"📋 RÜCKSEITE";
  let front=`<div class="flipCard"><div class="rating">${eff(p)} <span style="font-size:17px">${p.pos}</span></div>${photoHTML(p)}<h2>${p.name}</h2><p>${p.flag} ${playerNation(p)} · ${POSITION_NAMES[p.pos]||p.pos}</p><p>⭐ ${cardLevel(p.id)===4?"💎 DIAMANT":cardLevel(p.id)+" / 4"} · ${count} Karten gesammelt</p><button class="flipAction" id="flipToggle">🔄 RÜCKSEITE ANSEHEN</button></div>`;
  let back=`<div class="flipCard"><div style="font-size:11px;letter-spacing:2px;color:#e8d298">SPIELERPROFIL</div><h2>${p.name}</h2><div class="flipMeta"><div><small>Nationalität</small><b>${p.flag} ${playerNation(p)}</b></div><div><small>Alter</small><b>${age===null?"Noch nicht hinterlegt":age+" Jahre"}</b></div><div><small>Geburtsdatum</small><b>${dob?dob.split("-").reverse().join("."):"Noch nicht hinterlegt"}</b></div><div><small>Position</small><b>${POSITION_NAMES[p.pos]||p.pos} (${p.pos})</b></div><div><small>Grösse</small><b>${facts.height||"Noch offen"}</b></div><div><small>Starker Fuss</small><b>${facts.foot||"Noch offen"}</b></div><div><small>Grundstärke</small><b>${p.rating}</b></div><div><small>Aktuelle Stärke</small><b>${eff(p)} (+${eff(p)-p.rating})</b></div><div><small>Kartenstufe</small><b>${["","🥉 Bronze","🥈 Silber","🥇 Gold","💎 Diamant"][cardLevel(p.id)]}</b></div><div><small>Gesammelt</small><b>${count} ${count===1?"Karte":"Karten"}</b></div><div><small>Bewertungsquelle</small><b>${FC26_VERIFIED[p.id]!==undefined?"FC 26":"Spielwert"}</b></div><div><small>Nächstes Upgrade</small><b>${count>=10?"Maximalstufe":count+" / "+nextUpgrade(count)}</b></div></div><div class="careerFacts"><strong>🏟️ Bekannte Karrierestationen</strong><p>${facts.clubs||"Noch nicht hinterlegt"}</p><strong>⚡ Typische Aufgaben der Position</strong><p>${styles.join(" · ")}</p></div><p class="flipNote">Karrierestationen sind nicht zwingend der aktuelle Verein. Positionsmerkmale sind allgemeine Spielbeschreibungen, keine gemessenen Einzelwerte.</p><button class="flipAction" id="flipToggle">🔄 VORDERSEITE ANSEHEN</button></div>`;
  $("flipContent").innerHTML=flipSide==="front"?front:back;$("flipToggle").onclick=()=>{flipSide=flipSide==="front"?"back":"front";drawPlayerFlip()};
